@@ -99,18 +99,14 @@ here we can add a pic of the plot of the variables distributions
 Outlier analysis was an important step in our EDA because several key variables are scores on bounded scales (e.g. audit scores, risk scores). Values far outside the expected range are more likely to be data entry errors than genuine observations and can heavily distort models. 
 For all numerical variables in numerical_cols, we plotted histograms with KDE overlays. This allowed us to:
 
- -Check that most values fall into sensible ranges.
- 
- -Spot isolated values far away from the bulk of the distribution.
- 
- -Identify which variables needed more detailed inspection.
+1. Check that most values fall into sensible ranges.
+2. Spot isolated values far away from the bulk of the distribution.
+3. Identify which variables needed more detailed inspection.
  
 From this step, three variables clearly stood out:
-   -audit_score_q1
-   
-   -overall_risk_score
-   
-   -compliance_score_final
+1. audit_score_q1
+2. overall_risk_score
+3. compliance_score_final
 
 Observed values for audit_score_q1 clearly below 30, which is unrealistic for this scoring context. These outliers were treated as erroneous and set to NaN.
 Some values for overall_risk_score were > 100, which is impossible for a 0–100 risk scale. All values > 100 were set to NaN.
@@ -147,25 +143,37 @@ Both correlations are essentially zero. Departments with more missing data are n
 
 **Missing Data Imputation: Two Procedures**
 We tested two imputation strategies for departments and high_risk_departments:
-Procedure 1 – High-risk-aware imputation and for departments that appear in both table we use values from high_risk_departments to fill missing fields in departments when available. 
+**Procedure 1:**  High-risk-aware imputation and for departments that appear in both table we use values from high_risk_departments to fill missing fields in departments when available. 
 
 For remaining missing values:
 Numerical → median.
 Categorical / boolean → mode.
+
 Apply the same median/mode rules to high_risk_departments.
 
-Procedure 2 – Pure statistical imputation and Ignore cross-table copying.
+**Procedure 2:** Pure statistical imputation and Ignore cross-table copying.
 For both tables:
 Numerical → median.
 Categorical / boolean → mode.
 
-We compared:
-Row-level similarity between corresponding departments. Division-level statistics (e.g., average compliance, risk scores, violations). Distribution shapes of numerical variables (histograms).
+**We compared:**
+Row-level similarity between corresponding departments. Division-level statistics (e.g., average compliance, risk scores, violations). Distribution shapes of numerical variables.
 
-Result:
+**Result:**
 Both procedures produced very similar division-level aggregates.
 However, Procedure 2 preserved the original distributions of numerical variables more faithfully.
 We adopted Procedure 2 for final imputation.
+
+**What we did so far**
+```mermaid
+flowchart TD
+    A[Raw Data] --> B[Boolean Fixing]
+    B --> C[Remove Metadata Columns]
+    C --> D[Check High-Risk IDs]
+    D --> E[Deduplicate]
+    E --> F[Imputation]
+    F --> G[Clean Dataset]
+```
 
 
 
