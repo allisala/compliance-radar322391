@@ -93,8 +93,9 @@ We computed .describe() on all numerical variables in order to examine:
  2. Dispersion (std, min, max, quartiles).
 This guided our search for implausible values and extreme outliers.
 
+here we can add a pic of the plot of the variables distributions 
+
   **Outlier handling**
-  
 Outlier analysis was an important step in our EDA because several key variables are scores on bounded scales (e.g. audit scores, risk scores). Values far outside the expected range are more likely to be data entry errors than genuine observations and can heavily distort models. 
 For all numerical variables in numerical_cols, we plotted histograms with KDE overlays. This allowed us to:
 
@@ -113,81 +114,58 @@ From this step, three variables clearly stood out:
 
 Observed values for audit_score_q1 clearly below 30, which is unrealistic for this scoring context. These outliers were treated as erroneous and set to NaN.
 Some values for overall_risk_score were > 100, which is impossible for a 0–100 risk scale. All values > 100 were set to NaN.
-Very low values for compliance_score_final, values < 20 are rare but valid within [0, 100].
+Very low values for compliance_score_final, values < 20 are rare but valid within a range (0, 100).
 That is why instead of removing them, we flagged them as:
 extreme_non_compliance = 1 if compliance_score_final ≤ 20.
+We also checked the outliers for the categorical columns, but we observed that even the smallest categories are not small enough to combine them with some other categores so we did not modify anything.
 
-(Here you might add one scatter plot showing outliers before/after cleaning.)
-3.4 Logical Consistency Checks
+okay, here we may add the plots from the num variables or somethinng else from that analysys??
+
+**Logical Consistency Checks**
 We checked cross-variable consistency, especially between audit and compliance scores.
-Rule examined:
-If audit scores exist (Q1 or Q2), the final compliance score should also exist.
-We found 22 inconsistent rows where:
-compliance_score_final is missing
-but at least one of audit_score_q1 or audit_score_q2 is present.
-Of these, 8 departments are flagged as high risk.
-These 8 were kept, and we added a flag:
-audit_scores_missing = 1 for them.
-The remaining 14 rows (non–high-risk) were dropped as inconsistent and low-value.
-3.5 Missing Data Analysis
-Overall missingness
-Many columns had 36–43% missing values in the raw departments table.
-Key ID variables (dept_id, dept_category) are complete, which allowed us to:
-Group by category
-Study patterns in missingness
-Missingness by dept_category
-We computed missing counts and rates by dept_category.
-Pattern observed:
-Operational_Compliance departments have very high missingness (≈ 83%).
-Financial_Reporting and Risk_Management have much better data completeness (≈ 8–9%).
+Rule that we examined:
+If audit scores exist (Q1 or Q2), the final compliance score should also exist and we found 22 inconsistent rows where: compliance_score_final is missing, but at least one of audit_score_q1 or audit_score_q2 is present.
+Of these, 8 departments are flagged as high risk. These 8 were kept, and we added a flag: audit_scores_missing = 1 for them. The remaining 14 rows (non–high-risk) were dropped as inconsistent and low-value.
+
+**Missing Data Analysis**
+We first observe the overall missingness. Many columns had 36–43% missing values in the raw departments table. 
+Key ID variables (dept_id, dept_category) are complete, which allowed us to group by category. 
+Study patterns in missingness: Missingness by dept_category. We computed missing counts and rates by dept_category.
+Pattern observed: Operational_Compliance departments have very high missingness (≈ 83%). Financial_Reporting and Risk_Management have much better data completeness (≈ 8–9%).
+Interpretation: Missingness is structural, departments dealing with Operational Compliance rules systematically did not submit their data.
+
+Missingness by division: At first glance, Corporate_HQ seemed to have more missing data, but that was driven by the much larger number of departments. When we looked at percentages, Corporate_HQ and Regional_Operations had similar missingness (~9%). Rows with missing division showed that ~100% missingness for almost all analytical columns, which is a perfect overlap with Operational_Compliance category.
+
+Conclusion: Rows with missing division cannot be recovered (almost fully empty).Do not systematically correspond to high-risk departments. That is why we dropped all rows with missing division from both departments and high_risk_departments.
+
+**Is Missingness Related to Risk or Compliance?**
+We tested whether rows with more missing values are inherently riskier or less compliant. Defined row-level missingness rate (% missing across analytical columns). Correlated it with: compliance_score_final, correlation ≈ 0.035 and overall_risk_score: correlation ≈ 0.019
+
 Interpretation:
-Missingness is structural: departments dealing with Operational Compliance rules systematically did not submit their data.
-Missingness by division
-At first glance, Corporate_HQ seemed to have more missing data, but:
-That was driven by the much larger number of departments.
-When we looked at percentages, Corporate_HQ and Regional_Operations had similar missingness (~9%).
-Rows with missing division showed:
-~100% missingness for almost all analytical columns.
-Perfect overlap with Operational_Compliance category.
-Conclusion:
-Rows with missing division:
-Cannot be recovered (almost fully empty).
-Do not systematically correspond to high-risk departments.
-👉 We dropped all rows with missing division from both departments and high_risk_departments.
-3.6 Is Missingness Related to Risk or Compliance?
-We tested whether rows with more missing values are inherently riskier or less compliant.
-Defined row-level missingness rate (% missing across analytical columns).
-Correlated it with:
-compliance_score_final: correlation ≈ 0.035
-overall_risk_score: correlation ≈ 0.019
-Interpretation:
-Both correlations are essentially zero.
-Departments with more missing data are not systematically more or less risky/compliant.
-Supports our decision to drop fully missing rows without biasing the outcome.
-(If you like, you can include one heatmap of missingness to illustrate structure.)
-3.7 Missing Data Imputation: Two Procedures
+Both correlations are essentially zero. Departments with more missing data are not systematically more or less risky/compliant. Supports our decision to drop fully missing rows without biasing the outcome.
+----maybe we can add the heatmap here??
+
+**Missing Data Imputation: Two Procedures**
 We tested two imputation strategies for departments and high_risk_departments:
-Procedure 1 – High-risk-aware imputation
-For departments that appear in both tables:
-Use values from high_risk_departments to fill missing fields in departments when available.
+Procedure 1 – High-risk-aware imputation and for departments that appear in both table we use values from high_risk_departments to fill missing fields in departments when available. 
+
 For remaining missing values:
 Numerical → median.
 Categorical / boolean → mode.
 Apply the same median/mode rules to high_risk_departments.
-Procedure 2 – Pure statistical imputation
-Ignore cross-table copying.
+
+Procedure 2 – Pure statistical imputation and Ignore cross-table copying.
 For both tables:
 Numerical → median.
 Categorical / boolean → mode.
-Comparison
+
 We compared:
-Row-level similarity between corresponding departments.
-Division-level statistics (e.g., average compliance, risk scores, violations).
-Distribution shapes of numerical variables (histograms).
+Row-level similarity between corresponding departments. Division-level statistics (e.g., average compliance, risk scores, violations). Distribution shapes of numerical variables (histograms).
+
 Result:
 Both procedures produced very similar division-level aggregates.
 However, Procedure 2 preserved the original distributions of numerical variables more faithfully.
-👉 We adopted Procedure 2 for final imputation.
+We adopted Procedure 2 for final imputation.
 
 
 
