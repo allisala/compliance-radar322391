@@ -10,59 +10,83 @@ A secondary goal is to evaluate whether existing internal classifications — su
 ```mermaid
 flowchart LR
     A[Dataset] --> B[EDA]
-    B --> C[Initial Insights]
-    C --> D[Future Steps]
+    B --> C[Feature Engineering]
+    C --> D[Modeling]
+    D --> E[Insights]
+
+    %% feedback / backward loops
+    C -->|Re-evaluate features| B
+    D -->|Tune inputs| C
+    E -->|New questions| B
+
+    %% node styles
+    classDef start   fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px;
+    classDef process fill:#e3f2fd,stroke:#0d47a1,stroke-width:1.5px;
+    classDef insight fill:#fff3e0,stroke:#e65100,stroke-width:2px;
+
+    class A start;
+    class B,C,D process;
+    class E insight;
+
 ```
 ### 3. Dataset description
-
 Before beginning the EDA, the data required significant preparation to ensure accuracy and interpretability:
- 1. Variable understanding and feature selection
-Each variable was evaluated for its relevance to compliance analysis.
-	•	Identification variables (e.g., dept_id, dept_category, division, dept_type) were retained.4
 
-	•	Operational, behavioral, and risk-related indicators were kept, as they may influence compliance levels.
+ **Data Type Standardization**   
+Several variables representing yes/no or true/false information were stored as object types instead of numeric or boolean.
+These included columns such as remediation_plan_active, executive_support, external_consulting, and others.
+To prevent Pandas errors and ensure proper statistical treatment, all these fields were converted to numeric (0/1).
+This ensures consistency across operations like aggregation, plotting, and modeling.
 
-	•	Variables providing no analytical value (e.g., dept_name, creation_reason, secondary_function) were removed early to reduce noise.
- 3. Data type corrections
-Several binary/boolean fields were stored as objects; these were converted to numeric formats to prevent analytical errors during modeling and statistical tests.
- 4. Consistency checks across tables
-We verified that all departments listed as high-risk also appeared in the main table. No orphan records were found, and the tables were aligned accordingly.
- 5. Integration of high-risk information
-To enrich the dataset, we added a binary flag (present_in_high_risk_departments) to the main table, indicating whether a department is listed as high risk. This allows us to examine risk status as a potential predictor of compliance.
- 6. Duplicate detection and resolution
-The departments table contained both full-row and ID-level duplicates. Because dept_id uniquely identifies a unit, duplicates posed a threat to analytical integrity.
-A structured rule-based approach was used:
-	•	If duplicates included a high-risk instance, that record was prioritized.
+ **Removal of Irrelevant or Non-Useful Columns**
+Certain fields did not contribute meaningful information to the analysis or modeling process.
+These included descriptive or metadata-only columns such as:
+ dept_name
+ secondary_function
+ creation_reason
+ _metadataproject_string
+ _metadataacademic_year
+Removing these columns reduces noise, simplifies the dataset, and helps avoid accidental data leakage.
 
-	•	Otherwise, the first occurrence was preserved.
+**Cross-Table Integrity Check (Department Presence Verification)**
+The project uses two main tables:
+departments (full population of departments)
+high_risk_departments (subset flagged as high-risk)
+We validated that every department ID listed as high-risk also appears in the main table.
+A mismatch would imply missing data or incomplete records.
+We found that all high-risk departments were present, so no restorative steps were needed.
+Nevertheless, we filtered high_risk_departments to keep only IDs present in the main table for safety.
 
-	•	The high_risk_departments table was similarly cleaned by comparing duplicates to their corresponding records in the main table and retaining the best match.
+**Combining Risk Labels with the Main Dataset**
+To integrate information from both tables, we added a new column:
+present_in_high_risk_departments, indicating whether each department is high-risk (1) or not (0).
+This creates a unified table where risk classification is directly available for modeling and EDA.
+The merge was done via a simple membership check using dept_id.
 
-After this data-cleaning workflow, the final dataset contains 682 unique departments with consistent, reliable attributes ready for exploration.
+**Duplicate Detection and Handling**
+We checked for two types of duplication: Full-row duplicates (identical rows) and duplicate department IDs (dept_id repeated across rows) and since dept_id is the unique identifier for each department, duplicates must be resolved carefully. Some duplicates corresponded to high-risk departments. In these cases, we kept the high-risk version of the row. If both duplicates were high-risk or both were non–high-risk, we kept the first occurrence to maintain consistency. After deduplication, each department appears exactly once, eliminating ambiguity in the dataset.
+
+**Final Outcome**
+All boolean values properly formatted. Irrelevant or redundant columns removed. High-risk table fully aligned with the main dataset. Risk labels integrated into the main table. Duplicate rows resolved with priority rules. The dataset is now clean, consistent, and ready for reliable EDA and modeling
+
 ## 4. Exploratory Data Analysis (EDA)
-The goal of EDA was to undersand the structure, data quality, and behaviour of the dataset in order to prepare it for modeling and derive early insights about compliance and risk. These are the steps we followed on order to get the logical sequence of work: data structure → data quality → outliers → missingness → correction decisions → feature relationships → multicollinearity → scaling → dimensionality reduction. 
 
-**Dataset Structure and Variable Types**
+Before performing modeling or statistical interpretation, we conducted an Exploratory Data Analysis (EDA) to better understand the structure, quality, and behavior of the dataset.
+EDA helps us to detect data quality issues (wrong data types, missing values, duplicates), identify outliers and unusual patterns that may distort modeling, understand variable distributions (skewness, extreme values, clustering), verify assumptions about numerical, categorical, and boolean variables, and prepare the dataset for preprocessing and feature engineering.
+Because ML models rely heavily on clean, correctly formatted data, EDA is a critical step before modeling.
 
-The departments dataset originally contained 682 rows and 35 columns, mixing:
-	•	Categorical variables: identifiers, department types, locations, structures.
-  
-	•	Numeric variables: scores, risks, experience levels, violations.
-  
-	•	Boolean/flag variables: program participation, support indicators, etc.
+  **Dataset Shape & Variable Types**
+We first inspected the dataset structure:
+The departments table contains 682 rows and 35 variables.
+Data types were reviewed to ensure correct classification:
+Categorical variables are mostly department identifiers and descriptive labels
+Numerical variables are continuous measures used in risk assessment
+Boolean variables are originally stored as objects; previously converted to numeric (0/1)
 
-To enable targeted analysis, variables were grouped into:
-	•	Categorical
-  
-	•	Numerical
-  
-	•	Boolean
+This split allows domain-specific handling of each variable type during EDA.operations, financial indicators, employee engagement, and risk/compliance metrics.
 
-This grouping was needed for imputation, plotting, encoding, and model preparation.
 
-**2. Outlier Detection**
 
-Histograms and scatterplots revealed several anomalies:
 
 ## 5. Current Findings
 (*Only 2–3 early insights — can fill later!*)
