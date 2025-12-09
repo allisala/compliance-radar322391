@@ -4,7 +4,7 @@ Machine Learning project
 
 ---
 ## Contributors
-- Lamina Alisa
+- Lamina Alisa, 321961
 - Kopalina Maiia, 321891
 - Filippa Gronberg, 322391
 - Evelina Ristovska, 315951
@@ -317,6 +317,70 @@ We convert the three K-Means centroids into practical thresholds by taking the m
 ---
 
 
+```mermaid
+flowchart TD
+    %% 1. Input & Data Preparation
+    A["Raw Score: compliance_score_final (0–100)"]
+    A --> B{"Threshold: < 55 → y = 0/1"};
+
+    %% 2. Modeling
+    B --> C[Train Logistic Regression];
+    C --> D["Model learns P̂ = non-compliance probability"];
+
+    %% 3. Classification & Risk Assignment
+    D --> E{"Default Classification Threshold = 0.5"};
+    E --> F[Departments classified as Compliant / Non-compliant];
+    F --> G["Assign Risk Status based on P̂"];
+
+    %% 4. Risk Status Detail (Parallel outputs from G)
+    G --> H_RISK{Risk Status Breakdown};
+    H_RISK --> H1("Low Risk < 27%");
+    H_RISK --> H2("Medium Risk 27–69%");
+    H_RISK --> H3("High Risk > 69%");
+    
+    G --> I["Compute Feature Contributions: βᵢ * xᵢ_scaled"];
+
+    %% 5. Insight Generation
+    I --> J[Identify Top Positive Contributions → Risk Drivers];
+
+    %% 6. Actionable Recommendations
+    J --> K[Convert scaled features back to real-world units];
+    K --> L[Generate Actionable Recommendations / Portfolio];
+    
+    L --> M_ACTIONS{Action Portfolio};
+    M_ACTIONS --> M1["Adjust measurable features to reduce P̂"];
+    M_ACTIONS --> M2[Combine changes for optimal risk reduction];
+
+    %% 7. Final Output
+    L --> N[Final Report / Dashboard];
+    
+    N --> O_OUTPUTS{Report Metrics};
+    O_OUTPUTS --> O1(dept_id);
+    O_OUTPUTS --> O2("non_compliance_prediction");
+    O_OUTPUTS --> O3(status);
+    O_OUTPUTS --> O4("non_compliance_risk %");
+    O_OUTPUTS --> O5(target);
+    O_OUTPUTS --> O6(risk_drivers);
+    O_OUTPUTS --> O7(optimal_action_portfolio);
+
+    %% Node Styles Definitions
+    classDef start fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px;
+    classDef model fill:#e3f2fd,stroke:#0d47a1,stroke-width:1.5px;
+    classDef insight fill:#fff3e0,stroke:#e65100,stroke-width:2px;
+    classDef report fill:#fce4ec,stroke:#880e4f,stroke-width:2px;
+    classDef step fill:#cfd8dc,stroke:#37474f,stroke-width:1px;
+
+    %% Applying Styles (Исправлено!)
+    class A start;
+    class C,D model;
+    class B,E step;
+    class F,G,J insight;
+    class I,K,L step;
+    class H1,H2,H3,M1,M2 step; 
+    class H_RISK,M_ACTIONS,O_OUTPUTS step;
+    class N report;
+    class O1,O2,O3,O4,O5,O6,O7 report;
+```
 
 **SECOND EXPERIMENTAL APPROACH**
 
