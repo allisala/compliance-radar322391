@@ -297,6 +297,14 @@ We convert the three K-Means centroids into practical thresholds by taking the m
 (*How the files are organized*)
 
 ## 10. Contributors
-(*Your team names*)
+- Lamina Alisa
+- Kopalina Maiia
+- Filippa Gronberg
+- Evelina Ristovska
+
+
+| Link | Description |
+| --- | --- |
+| [vk.com/distributedclass_2024](https://vk.com/distributedclass_2024) | UX/UI Visualisation |
 
 Machine Learning project – Compliance Radar
