@@ -6,7 +6,7 @@ Machine Learning project
 ## Contributors
 - Lamina Alisa
 - Kopalina Maiia, 321891
-- Filippa Gronberg
+- Filippa Gronberg, 322391
 - Evelina Ristovska, 315951
 
 # **Introduction**
