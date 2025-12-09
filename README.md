@@ -38,14 +38,14 @@ flowchart LR
 
 ```
 ### Dataset overview
-We have four tables: `departments` (the main table distributing departments), `high_risk_departments` (subset of the main departments table, distrebuting only the departments that are associated with high risk), `risk_summary_by_division` (shows inforations anout devisions and devisions containing departments), and `data_dictionary` (gives a detailed meaning of the variables). From the full analysis of our variables we concluded that:
+We have four tables: `departments` (the main table distributing departments), `high_risk_departments` (subset of the main departments table, distributing only the departments that are associated with high risk), `risk_summary_by_division` (shows information about divisions and the departments they contain), and `data_dictionary` (gives a detailed meaning of the variables). From the full analysis of our variables we concluded that:
 
 - There are many variables that could possibly affect the non-compliance. However, `reation_reason`, `secondary_function`, `dept_name` will bring more noise than     information, therefore, should be dropped at the very early stages.
 
-- A non-compliance is: as the dictionary table explains, there already exist two main scores assosiated with compliance and overall risk: `compliance_score` and  the `overall_risk_score`. **What is the difference between them?**
+- A non-compliance is: as the dictionary table explains, there already exist two main scores associated with compliance and overall risk: `compliance_score` and  the `overall_risk_score`. **What is the difference between them?**
 
-- `compliance_score` is the overall compliance rating, so the compliance was already measures for the chosen department.
-- `overall_risk_score` includes risks, but not only for non-compliance. Possibly also financial risk, operatrional risk, etc.
+- `compliance_score` is the overall compliance rating, so the compliance was already measured for the chosen department.
+- `overall_risk_score` includes risks, but not only for non-compliance. Possibly also financial risk, operational risk, etc.
 
 ### Dataset description
 Before beginning with the EDA, the data required significant preparation to ensure accuracy and interpretability:
@@ -56,7 +56,7 @@ These included columns such as `remediation_plan_active`, `executive_support`, `
 To prevent Pandas errors and ensure proper statistical treatment, all these fields were converted to numeric (0/1), which ensures consistency across operations like aggregation, plotting, and modeling.
 
  **Removal of Irrelevant or Non-Useful Columns**
-Certain variables did not contribute meaningful information to the analysis or modeling process. We droped those values because their reasoning is qualitative and not data-driven, because they do not have predictive features, meaning that the model would simply memorize department names, and not learn generalizable patterns. Such variables increase noise and create overfitting and also it helps avoid accidental data leakage. So we droped:
+Certain variables did not contribute meaningful information to the analysis or modeling process. We dropped those values because their reasoning is qualitative and not data-driven, because they do not have predictive features, meaning that the model would simply memorize department names, and not learn generalizable patterns. Such variables increase noise and create overfitting and also it helps avoid accidental data leakage. So we dropped:
  1. `dept_name`
  2. `econdary_function`
  3. `creation_reason`
@@ -204,7 +204,7 @@ $$
 
 ### Mutual Information – MI
 -In order to capture relationships bound linear-ones between variables, we will compute mutual information, and their heatmap matrix. **Mutual Information is essentially a measure of how much the knowledge of one variable reduces the uncertainty of another variable.** 
--Then we compare our variables Mi score to the target variable of compliance_score_final. 
+-Then we compare our variables MI score to the target variable of compliance_score_final. 
 -We identify the variables which have a MI score under threshold score 0.01 and drop these variables as they do not have a valuable impact on our target variable `compliance_score_final`, and will therefore not give valuable insights in further modeling and analysis. This enables us to work with a concentrated amount of variables for easier modeling.
 -Finally, we rebuilt the working dataset by combining dept_id, the selected MI-based features and the target compliance_score_final. The resulting table has 424 departments and 32 columns, providing a compact, information-rich feature set for modeling, where each remaining predictor has demonstrated a meaningful relationship with compliance.
 
