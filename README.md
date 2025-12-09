@@ -517,13 +517,20 @@ In conclusion: if we have high CRI and low CCSF for a department, this tells the
 
 # Results
 
+The main results of our project is the final_report table. We will delve into how this table was built step by step.
+We began by training three ML models, and choosing the best performing one (Logistic regression) to distinguish compliant from non-compliant departments. From Logistic Regression we achieved coefficients of non_compliance_risk. Having this probability, we estimate the department's current and prospective risk statuses, derive top five risk driving features, and suggest how to improve them. This is how we obtain the foundation of our final_report table. 
+
 NONCOMPLIANT ((HIGH RISKS)
 ![noncompliant_high_risk_with_ethical](images/noncompliant_high_risk_with_ethical.png)
 ![noncompliant_high_risk_final](images/noncompliant_high_risk_final.png)
 
+From department features (location, team size etc.) and non-compliance risk probability we identify ethical inconsistencies and add them to the final report table creating a more advanced description. 
+
 NONCOMPLIANT ((MEDIUM RISKS)
 ![noncompliant_medium_risk_with_ethical](images/noncompliant_medium_risk_with_ethical.png)
 ![noncompliant_medium_risk_final](images/noncompliant_medium_risk_final.png)
+
+By comparing generally risky departments with normal departments we find patterns that make departments generally risky. Then we create an index CRI which measures likeliness for a department to be generally risky. We assign each department with a status (high, medium, low) based on CRI. Next we match the concept of historical pattern (presence in high_risk departments) with CRI, providing suggestions for managers in each case. 
 
 COMPLIANT (MEDIUM RISKS)
 ![compliant_medium_risk_with_ethical](images/compliant_medium_risk_with_ethical.png)
