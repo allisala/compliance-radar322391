@@ -405,10 +405,35 @@ After training the non-compliance model, we brought the predictions back into th
 
 **Individual department non-compliance risk profile**
 Having computed each department’s predicted non-compliance risk, we can now compare how this risk behaves across divisions and across different categorical characteristics. This gives managers a broader, strategic view of where compliance vulnerabilities tend to concentrate—not just at the individual-department level but across entire organisational segments.
--**For example,** the heatmaps allow us to see patterns such as: Departments located in Urban areas within the Corporate_HQ division show an average non-compliance risk of X%, whereas Urban departments in Regional_Operations show Y%.
+- **For example,** the heatmaps allow us to see patterns such as: Departments located in Urban areas within the Corporate_HQ division show an average non-compliance risk of X%, whereas Urban departments in Regional_Operations show Y%.
 
--**Insights like these help managers understand which combinations of division and category** (team size, location, department type, oversight body, etc.) are systematically more exposed to risk. Instead of responding to isolated problem departments, managers can identify structural patterns—for instance, whether small teams in Corporate_HQ consistently score higher in risk, or whether certain oversight structures reduce or increase non-compliance in specific divisions.
--**In practice,** this means managers can focus their attention and resources on the exact category-division intersections where risk is highest, ensuring more targeted interventions, better policy design, and more efficient allocation of compliance support.
+- **Insights like these help managers understand which combinations of division and category** (team size, location, department type, oversight body, etc.) are systematically more exposed to risk. Instead of responding to isolated problem departments, managers can identify structural patterns—for instance, whether small teams in Corporate_HQ consistently score higher in risk, or whether certain oversight structures reduce or increase non-compliance in specific divisions.
+- **In practice,** this means managers can focus their attention and resources on the exact category-division intersections where risk is highest, ensuring more targeted interventions, better policy design, and more efficient allocation of compliance support.
+
+### Ethical Inconsistencies
+**Beyond predicting non-compliance, we also use the model to scan for ethical inconsistencies – cases where a department appears to be treated unfairly given its context.**
+
+- **First, we define a set of positive operational conditions that should, in principle, support good compliance:**
+1. managers and supervisors with high experience
+2. strong resources and/or extensive compliance training
+3. clear oversight and executive support
+4. digital compliance systems or structured onboarding programs
+
+- For every department, we compare these **“good practice”** conditions with its predicted non-compliance risk.
+If the predicted risk is very high (above 69%) and at least one positive condition is present, we **flag** the case as a potential ethical inconsistency. We then generate a short explanation.
+This check does not prove discrimination, but it acts as an early-warning signal. It helps compliance leaders spot departments where high support and high predicted risk don’t match, indicating that the processes, expectations, or rule application may need a closer review.
+
+These cases suggest that the issue may not lie within the department itself but in how compliance expectations, processes or monitoring systems operate around it. **Several practical recommendations emerge:**
+1. **Re-evaluate whether the department’s risk assessment is calibrated correctly.**
+If a department has strong training, experienced leadership and solid oversight yet still receives an extremely high predicted risk, this may indicate that the current scoring or thresholds are too strict for certain profiles or contexts.
+2. **Investigate process or system barriers external to the department.**
+High resources and oversight but poor predicted outcomes can point to organisational bottlenecks, unclear procedures, outdated systems or conflicting directives that limit the department’s ability to comply.
+3. **Review whether monitoring practices are applied consistently.**
+Some departments may be rated more harshly than others despite similar behaviours. Ethical-inconsistency flags help identify potential cases of uneven monitoring, inconsistent application of rules or biased reporting structures.
+4. **Provide targeted support—not generic interventions.**
+Departments flagged under this check do not need more training or oversight; they need clarity, alignment and removal of structural barriers. Resources should therefore be redirected toward procedural reviews rather than additional compliance activities.
+5. **Use flagged cases to improve fairness and transparency.**
+These insights can inform fairness audits, guide internal policy reviews and help leadership demonstrate that risk assessments are being used responsibly and ethically.
 
 
 ---
@@ -417,15 +442,15 @@ Having computed each department’s predicted non-compliance risk, we can now co
 
 ---
 
-We created two new variables: 
-1. The Composite Risk Index (CRI) which measures how strongly a department resembles historically high-risk units based on operational, behavioral, and audit signals.
-2. The Composite Compliance Strength Factor (CCSF) captures the underlying strength of a department’s compliance practices.
+**We created two new variables:**
+1. **The Composite Risk Index (CRI)** which measures how strongly a department resembles historically high-risk units based on operational, behavioral, and audit signals.
+2. **The Composite Compliance Strength Factor (CCSF)** captures the underlying strength of a department’s compliance practices.
  
 By looking at risk and compliance together—not as isolated numbers — we get a more accurate picture of how each department operates and where intervention or support is needed.
 
 ---
 
-**Creating the CRI: Composite Risk Indexr**
+**Creating the CRI: Composite Risk Index**
 
 ---
 
