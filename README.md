@@ -4,8 +4,8 @@ Machine Learning project
 
 ---
 ## Contributors
-- Lamina Alisa, 321961
-- Kopalina Maiia, 321891
+- Alisa Lamina, 321961
+- Maiia Kopalina, 321891
 - Filippa Gronberg, 322391
 - Evelina Ristovska, 315951
 
