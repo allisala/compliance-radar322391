@@ -168,7 +168,7 @@ flowchart TD
 **FIRST APPROACH**
 ---
 Our goal was to understand which departments are at risk of becoming non-compliant and what exactly they can do to prevent it. To do this, we built a model that predicts whether a department is non-compliant (compliance score ≤ 55) based on its behavior, audit results, and risk exposure. 
-1. How the model works (in simple terms) we tested three different machine-learning methods, but we chose logistic regression because: It gives very clear, interpretable results. It shows exactly which factors push a department toward non-compliance, and by how much. This transparency is important: instead of treating the model as a “black box,” we can understand the reasoning behind every prediction.
+1. How the model works: we tested three different machine-learning methods, but we chose logistic regression because: it gives very clear, interpretable results, shows exactly which factors push a department toward non-compliance, and by how much. This transparency is important: instead of treating the model as a “black box,” we can understand the reasoning behind every prediction.
 2. Creating a non-compliance risk score The model assigns each department a non_compliance_risk value.
    - A higher score means the department is more likely to fall below the compliance threshold (≤55).
    - A lower score means the department is operating safely.
