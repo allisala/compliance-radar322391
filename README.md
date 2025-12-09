@@ -127,7 +127,7 @@ This indicates that missigness is not random and it shows that it concentrated i
 
  - **We concluded that the missingness is systematic and not random.** It is linked to Operational_Compliance and missing division information. Rows with complitely missing data (missing division), should be dropped, as they cannot contribute meaningfully to analysis or modeling. 
   
-  - Before choosing a strategy for handelling missing values, we needed to determine whether missigness is related to predictive of key outcome variables such as: `compliance_final_score` and `overall_risk_score`. If missingness correlates strongly with compliance or risk, then dropping
+  - Before choosing a strategy for handling missing values, we needed to determine whether missigness is related to predictive of key outcome variables such as: `compliance_final_score` and `overall_risk_score`. If missingness correlates strongly with compliance or risk, then dropping
 **We can drop the rows with missing division information AND even those present in the high_risk_departments. Why? Because of the following reasoning:**
 ```
 - Do all departments with missing values appear in the high_risk_departments? 
