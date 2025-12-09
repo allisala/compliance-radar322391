@@ -399,6 +399,18 @@ flowchart TD
     class O1,O2,O3,O4,O5,O6,O7 report;
 ```
 
+### Risk-Based Insights from the ML Model
+**Linking model outputs back to the original departments**
+After training the non-compliance model, we brought the predictions back into the original, non-standardized and non-encoded departments_raw table. This table keeps all variables in their original categorical form (`division`, `location_type`, `team_size`, etc.), which makes interpretation easier. The main ML outputs we merged in were the predicted non-compliance risk (`non_compliance_risk`), the binary non-compliant flag, cluster labels, recommended actions and driver tags. From this enriched table, we built several views to understand how risk is distributed across departments and groups.
+
+**Individual department non-compliance risk profile**
+Having computed each department’s predicted non-compliance risk, we can now compare how this risk behaves across divisions and across different categorical characteristics. This gives managers a broader, strategic view of where compliance vulnerabilities tend to concentrate—not just at the individual-department level but across entire organisational segments.
+-**For example,** the heatmaps allow us to see patterns such as: Departments located in Urban areas within the Corporate_HQ division show an average non-compliance risk of X%, whereas Urban departments in Regional_Operations show Y%.
+
+-**Insights like these help managers understand which combinations of division and category** (team size, location, department type, oversight body, etc.) are systematically more exposed to risk. Instead of responding to isolated problem departments, managers can identify structural patterns—for instance, whether small teams in Corporate_HQ consistently score higher in risk, or whether certain oversight structures reduce or increase non-compliance in specific divisions.
+-**In practice,** this means managers can focus their attention and resources on the exact category-division intersections where risk is highest, ensuring more targeted interventions, better policy design, and more efficient allocation of compliance support.
+
+
 ---
 
 **SECOND EXPERIMENTAL APPROACH**
