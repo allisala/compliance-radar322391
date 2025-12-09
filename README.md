@@ -123,6 +123,9 @@ To make sure that data missingness is not correlated with risk, we check correla
    
 ***----maybe we can add the heatmap here??***
 
+<img width="858" height="669" alt="image" src="https://github.com/user-attachments/assets/b336e98c-2a42-4815-9b00-6b3804c19c7e" />
+
+
 **Missing Data Imputation: Two Procedures**
 We tested two imputation strategies for departments and high_risk_departments:
 **Procedure 1:**  High-risk-aware imputation and for departments that appear in both table we use values from high_risk_departments to fill missing fields in departments when available. 
