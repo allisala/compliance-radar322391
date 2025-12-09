@@ -114,10 +114,19 @@ This indicates that missigness is not random and it shows that it concentrated i
   
   Furthermore, before choosing a strategy for handelling missing values, we needed to determine whether missigness is related to predictive of key outcome variables such as: compliance_final_score and overall_risk_score. If missingness correlates stronly with compliance or risk, then dropping
 We can drop the rows with missing division information AND even those present in the high_risk_departments. Why? Because of the following reasoning:
-
-Do all departments with missing values appear in the high_risk_departments? - No. So having all missing values is not equal to being risky.
-Do missing overall_risk_score AND compliance_score_final make a department risky? - No (from conclusion 1).
-Did these departments appear as risky because of the manual imputation? - Yes. So we initially didn't know anything about these departments and we know that the full missing data does not make a department risky. Therefore, all values for these departments were imputed with values that MADE them risky -> they appear as risky by accident.
+```
+- Do all departments with missing values appear in the high_risk_departments? 
+- No. So having all missing values is not equal to being risky.
+```
+```
+- Do missing overall_risk_score AND compliance_score_final make a department risky?
+- No (from conclusion 1).
+```
+```
+- Did these departments appear as risky because of the manual imputation?
+- Yes. So we initially didn't know anything about these departments and we know that the full missing data does not make a department risky.
+```
+Therefore, all values for these departments were imputed with values that MADE them risky -> they appear as risky by accident.
 Therefore, we should drop all departments with missing division.
 To make sure that data missingness is not correlated with risk, we check correlation between missing values and compliance or risk
    
