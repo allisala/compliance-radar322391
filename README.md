@@ -544,9 +544,12 @@ To bring to a close the compliance radar project: we developed an advanced risk 
 
 While our project is a huge step forward in identifying risk, it has limits and leaves a few questions open. The main idea we have not yet approached is the exact cause-and-effect. We know departments with few resources fail more often, but we cannot tell management the optimal level of investment or support actually needed to fix a struggling department. Next steps would be to develop a model that can estimate this for concrete consulting. Another unanswered question is how inherent organizational structure influences risk. Future work could incorporate data enrichment to capture structural variables, followed by network analysis to model the organization, allowing new metrics of departmental centrality to be calculated and tested as predictors of risk.
 
+# Compliance Radar Prototype
+
+In our Compliance Radar ML project, we’ve focused on building accurate predictions, actionable insights, and risk-reducing recommendations. But our work is now going beyond pure modeling — we’re starting to imagine how managers would actually use this system in real life. We’re designing the future workflow, tools, and decision-support process that managers will rely on. The prototype link is attached below.
 
 | Link | Description |
 | --- | --- |
-| [Figma Visualisation](https://www.figma.com/make/xzKM0gK3fdbSRfoWRittTV/Compliance-Tracking-Interface?node-id=0-1&t=EsSUHWPY2Qk1AZox-1) | UX/UI Visualisation |
+| [Figma Visualisation](https://www.figma.com/proto/GnJryat65SNnaWi7gYcsVM/Compliance-Radar?page-id=0%3A1&node-id=66-21896&viewport=-1281%2C-1181%2C0.4&t=sC41wax5TzU4QhVx-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=64%3A2352) | UX/UI Visualisation |
 
 Machine Learning project – Compliance Radar
