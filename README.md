@@ -186,6 +186,24 @@ flowchart TD
     Logistic Regression provides clear numerical coefficients that describe how each variable influences the probability of non-compliance. This is crucial for our purposes: we do not want a “black-box” prediction but a method that explains the reasoning behind its decisions. With Logistic Regression, we can see which variables raise the risk, which ones reduce it, and how strongly each contributes. This transparency is the foundation for building targeted, actionable recommendations.
 
 ---
+3.1. How Logistic Regression Produces the Risk Score 
+
+**Main Idea of the Framework**: As a result of Logistic Regression, the model outputs a probability. The framework uses Logistic Regression to estimate the Non-Compliance Risk P̂. Before producing this probability, the model first computes a raw value called the log-odds or Z-score. This Z-score can range from negative to positive infinity, because it is a linear combination of all input features.
+
+The model computes the log-odds as:
+```math
+Z = \log\left(\frac{P}{1-P}\right) = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \cdots + \beta_n x_n
+```
+
+The Logistic (Sigmoid) Function converts the Z-score into a probability between 0 and 1:
+```math
+\hat{P} = \text{Non-Compliance Risk} = \frac{1}{1 + e^{-Z}}
+```
+
+To convert this unbounded value into a probability between 0 and 1, Logistic Regression applies the logistic (sigmoid) function.The result P̂ is interpreted as the Non-Compliance Risk, i.e., the model’s estimated probability that a department belongs to the high-risk category.
+In practical terms, the non_compliance_risk variable shows how close a department is to becoming non-compliant. If the risk is above a certain threshold (we define it later), the department is approaching the danger zone and should adjust its weakest factor immediately. If the risk is 20% or lower, the department is not in urgent danger but should continue active monitoring and focused improvement.
+
+---
 4. Creating the Non-Compliance Risk Score
 
     The model outputs a probability value, which we interpret as the non_compliance_risk. A higher score indicates that a department is close to falling below the compliance threshold, while a lower score means the department is operating safely. Because this score is continuous, it gives a more nuanced picture than a simple “compliant/non-compliant” flag: departments near the boundary can be monitored early, before they officially become non-compliant.
@@ -206,9 +224,14 @@ We convert the three K-Means centroids into practical thresholds by taking the m
 <img width="1285" height="38" alt="image" src="https://github.com/user-attachments/assets/927611aa-625d-4832-9523-7a51e238125d" />
 
  ----
-Interpretation Guide explains, what the model is telling us about each department and how to use the results for decision-making.
 
- ----
+> [!TIP]
+> Interpretation Guide below explains, what the model is telling us about each department and how to use the results for decision-making. \
+> 1\. High-Risk & Non-Compliant \
+> 2\. Medium-Risk & Non-Compliant \
+> 3\. Compliant, but Medium Risk \
+> 4\. Compliant & Low Risk
+---
 
 - **Condition 1 — High-Risk & Non-Compliant**
 
