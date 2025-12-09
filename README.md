@@ -190,12 +190,29 @@ Compliance is most strongly explained by audit performance. `Audit_Score_Q2` (â‰
 **Risk Patterns**
 Risk is shaped by classic risk indicators. `Violations_past_3years`, `risk_exposure_operationa`l and `risk_exposure_financial` show strong positive correlations with overall risk, followed by `reporting_gaps_annual`. Lack of improvement commitment and the presence of external consulting also corresponded to higher risk.
 
-Key Insights for Feature Selection
+**Key Insights for Feature Selection:**
+Audit scores and training intensity are the core predictors of compliance, while violations, risk exposures and reporting quality are the strongest predictors of risk. The encoded dataset allows the ML models to use categorical distinctions effectively.
 
-Audit scores and training intensity are the core predictors of compliance, while violations, risk exposures and reporting quality are the strongest predictors of risk. The encoded dataset allows the ML models to use categorical distinctions effectively, while the exploratory analysis highlights which variables should be prioritized during model development for CRI and CCSF.
+### Multicollinearity check
+We are completing a check for multicollinearity between our variables. This is defined as correlation between two or more variables. High multicollinearity might cause problems in statistical stability and future ML modeling. We approach the check by calculating the VIF, a standard statistical measure of multicollinearity. **VIF is computed using the following formula:**
 
+$$
+\text{VIF}_k = \frac{1}{1 - R_k^2}
+$$
 
-MUTUAL INFORMATION VS COMPLIANCE_FINAL
+**We define two thresholds:**
+- Certain multicollinearity: VIF>= 10
+- Possible multicollinearity: VIF>=5
+**For the variables with VIF greater than 10 we will drop these variables, since they are unreliable to use for modeling.**
+
+### Mutual Information â€“ MI
+-In order to capture relationships bound linear-ones between variables, we will compute mutual information, and their heatmap matrix. **Mutual Information is essentially a measure of how much the knowledge of one variable reduces the uncertainty of another variable.** 
+-Then we compare our variables Mi score to the target variable of compliance_score_final. 
+-We identify the variables which have a MI score under threshold score 0.01 and drop these variables as they do not have a valuable impact on our target variable `compliance_score_final`, and will therefore not give valuable insights in further modeling and analysis. This enables us to work with a concentrated amount of variables for easier modeling.
+-Finally, we rebuilt the working dataset by combining dept_id, the selected MI-based features and the target compliance_score_final. The resulting table has 424 departments and 32 columns, providing a compact, information-rich feature set for modeling, where each remaining predictor has demonstrated a meaningful relationship with compliance.
+
+**MUTUAL INFORMATION VS COMPLIANCE_FINAL**
+
 <img width="939" height="541" alt="image" src="https://github.com/user-attachments/assets/95b9472f-2504-4f26-bfcf-8f436ad62fda" />
 
 
@@ -381,6 +398,8 @@ flowchart TD
     class N report;
     class O1,O2,O3,O4,O5,O6,O7 report;
 ```
+
+---
 
 **SECOND EXPERIMENTAL APPROACH**
 
