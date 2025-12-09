@@ -159,12 +159,24 @@ flowchart TD
 
 
 
-
 ## 5. Current Findings
 (*Only 2–3 early insights — can fill later!*)
 
 ## 6. Next Steps
 (*Modeling, feature engineering, etc.*)
+
+**FIRST APPROACH**
+Our goal was to understand which departments are at risk of becoming non-compliant and what exactly they can do to prevent it. To do this, we built a model that predicts whether a department is non-compliant (compliance score ≤ 55) based on its behavior, audit results, and risk exposure. 
+1. How the model works (in simple terms) we tested three different machine-learning methods, but we chose logistic regression because: It gives very clear, interpretable results. It shows exactly which factors push a department toward non-compliance, and by how much. This transparency is important: instead of treating the model as a “black box,” we can understand the reasoning behind every prediction.
+2. Creating a non-compliance risk score The model assigns each department a non_compliance_risk value.
+   - A higher score means the department is more likely to fall below the compliance threshold (≤55).
+   - A lower score means the department is operating safely.
+
+Because the model gives us the exact coefficients, we can clearly see which variables increase the risk and which ones reduce it. We can also understand how strongly each variable influences the prediction, which allows us to estimate how much the outcome would change if a department improved those specific factors. This turns the model into a diagnostic tool, not just a prediction tool.
+
+3. Turning model outputs into recommendations Based on the coefficients, we built a simple rule-based recommendation system that tells each department: what is driving their risk, and what specific actions would reduce that risk.
+   For example: If the model shows that “reporting gaps” strongly push the department into the non-compliant zone, the recommendation will highlight that issue and propose corrective actions. The recommendation system already works, but it can be improved by refining some special cases manually.
+
 
 ## 7. Tools & Technologies
 (*Python, Pandas, Jupyter, etc.*)
