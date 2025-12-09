@@ -167,17 +167,44 @@ flowchart TD
 
 **FIRST APPROACH**
 ---
-Our goal was to understand which departments are at risk of becoming non-compliant and what exactly they can do to prevent it. To do this, we built a model that predicts whether a department is non-compliant (compliance score ≤ 55) based on its behavior, audit results, and risk exposure. 
-1. How the model works: we tested three different machine-learning methods, but we chose logistic regression because: it gives very clear, interpretable results, shows exactly which factors push a department toward non-compliance, and by how much. This transparency is important: instead of treating the model as a “black box,” we can understand the reasoning behind every prediction.
-2. Creating a non-compliance risk score The model assigns each department a non_compliance_risk value.
-   - A higher score means the department is more likely to fall below the compliance threshold (≤55).
-   - A lower score means the department is operating safely.
+**Predicting Non-Compliance and Building a Risk Framework**
 
-    Because the model gives us the exact coefficients, we can clearly see which variables increase the risk and which ones reduce it. We can also understand how strongly each variable influences the prediction, which allows us to estimate how much the outcome would change if a department improved those specific factors. This turns the model into a diagnostic tool, not just a prediction tool.
-
-3. Turning model outputs into recommendations Based on the coefficients, we built a simple rule-based recommendation system that tells each department: what is driving their risk, and what specific actions would reduce that risk.
-   For example: If the model shows that “reporting gaps” strongly push the department into the non-compliant zone, the recommendation will highlight that issue and propose corrective actions. The recommendation system already works, but it can be improved by refining some special cases manually.
 ---
+1. Goal: the objective of this approach is to understand which departments are at risk of becoming non-compliant and what specific factors drive that risk. Instead of only reporting historical compliance scores, we use machine-learning models to predict the likelihood of non-compliance and to identify the underlying causes. This allows us to move from descriptive analysis (“what happened?”) to proactive decision support (“what will happen?” and “how do we fix it?”).
+   
+---
+2. Training Models to Identify Non-Compliant Departments
+   
+    We define non-compliance as a department scoring 55 or below, based on the distribution observed in the dataset. Using this threshold, we train three different classification models — Logistic Regression, Support Vector Classifier, and HistGradientBoosting — and evaluate them through cross-validation. Although all three models perform similarly, Logistic Regression stands out for its interpretability and high ROC-AUC. Predictions from this model allow us not only to classify departments but also to understand why each prediction is made.
+
+---
+3. Why Logistic Regression Was Selected
+   
+    Logistic Regression provides clear numerical coefficients that describe how each variable influences the probability of non-compliance. This is crucial for our purposes: we do not want a “black-box” prediction but a method that explains the reasoning behind its decisions. With Logistic Regression, we can see which variables raise the risk, which ones reduce it, and how strongly each contributes. This transparency is the foundation for building targeted, actionable recommendations.
+
+---
+4. Creating the Non-Compliance Risk Score
+
+    The model outputs a probability value, which we interpret as the non_compliance_risk. A higher score indicates that a department is close to falling below the compliance threshold, while a lower score means the department is operating safely. Because this score is continuous, it gives a more nuanced picture than a simple “compliant/non-compliant” flag: departments near the boundary can be monitored early, before they officially become non-compliant.
+
+---
+5. Understanding What Drives the Risk
+   
+    Since Logistic Regression produces explicit coefficients, we can identify the strongest drivers of non-compliance for every department. Positive coefficients are variables that increase the risk, while negative coefficients reduce it. The magnitude of each coefficient shows how impactful that variable is. This transforms the model from a prediction tool into a diagnostic tool, allowing us to understand which organizational behaviors contribute the most to compliance failures.
+
+---
+6. Turning Insights into Actionable Recommendations
+   
+    Using the model coefficients, we build a rule-based recommendation layer. For each department, the framework highlights its key risk drivers and specifies which improvements would have the most meaningful impact. The system provides both “single action” recommendations and “combined portfolio” recommendations, depending on how many variables need adjustment. While the recommendation logic can be refined manually for special cases, it already produces clear, actionable guidance tailored to individual departments.
+
+---
+7. Final Output of the Framework
+   
+    The final report generated by this approach includes the predicted compliance status, the non-compliance risk score, the assigned risk category, the improvement target, the top drivers of risk, and a customized action plan. This creates a complete decision-support tool that integrates predictive modeling with practical recommendations. By combining statistical modeling with interpretability, the framework helps the organization identify emerging risks early and intervene in a targeted and effective way.
+
+---
+
+
 
 ## 7. Tools & Technologies
 (*Python, Pandas, Jupyter, etc.*)
