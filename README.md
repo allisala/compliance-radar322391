@@ -524,6 +524,8 @@ In conclusion: if we have high CRI and low CCSF for a department, this tells the
 
 
 # Final Conclusion
+
+
 To bring to a close the compliance radar project: we developed an advanced risk assessment system using machine learning methods to look beyond simple compliance score prediction. We used different experimental approaches such as the Logistic Regression, proving non-compliance is not a random mistake, but a clear indicator of deeper structural problems within the organization. We analysed this further, by creating variables, and thus a process distinguishing which variables are mostly affecting risk in departments and equally compliance in departments. The final output of final_reports, gives a global view for managers to pinpoint, grounds and mitigations for well- or poor performing departments.
 
 While our project is a huge step forward in identifying risk, it has limits and leaves a few questions open. The main idea we have not yet approached is the exact cause-and-effect. We know departments with few resources fail more often, but we cannot tell management the optimal level of investment or support actually needed to fix a struggling department. Next steps would be to develop a model that can estimate this for concrete consulting. Another unanswered question is how inherent organizational structure influences risk. Future work could incorporate data enrichment to capture structural variables, followed by network analysis to model the organization, allowing new metrics of departmental centrality to be calculated and tested as predictors of risk.
