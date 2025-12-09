@@ -176,8 +176,23 @@ Following this decision, all missing values in both the departments and high_ris
 <img width="939" height="653" alt="image" src="https://github.com/user-attachments/assets/5a5d7319-f626-4edd-bf63-eceb7b710742" />
 
 
-### Encoding
+### Encoding and Feature Exploration
 
+**Encoding of Categorical Variables**
+To prepare the data for the modeling part, the main categorical `variables—dept_category`, `division`, `dept_type`, `location_type`, `team_size`, `reporting_structure`, `primary_function` and `oversight_body—were` converted using one-hot encoding. These variables have no natural order, and the number of categories is manageable, making dummy encoding the most appropriate choice. The dept_id column was kept separate during encoding to avoid being transformed. After encoding, the dataset contained 424 departments and 53 columns, while a non-encoded copy was kept for visualization and interpretation.
+
+**Relationships with Compliance and Risk**
+Using the non-encoded version, we explored how variables relate to the two targets: `compliance_score_final` and `overall_risk_score`. 
+
+**Compliance Patterns**
+Compliance is most strongly explained by audit performance. `Audit_Score_Q2` (≈0.89) and `Audit_Score_Q1` (≈0.80) dominate all other predictors. Training hours show a mild positive relationship. In categorical patterns, Technology departments, Medium-sized teams, Hybrid reporting structure and International locations tended to score higher on compliance. Departments previously labeled as high-risk showed lower compliance.
+
+**Risk Patterns**
+Risk is shaped by classic risk indicators. `Violations_past_3years`, `risk_exposure_operationa`l and `risk_exposure_financial` show strong positive correlations with overall risk, followed by `reporting_gaps_annual`. Lack of improvement commitment and the presence of external consulting also corresponded to higher risk.
+
+Key Insights for Feature Selection
+
+Audit scores and training intensity are the core predictors of compliance, while violations, risk exposures and reporting quality are the strongest predictors of risk. The encoded dataset allows the ML models to use categorical distinctions effectively, while the exploratory analysis highlights which variables should be prioritized during model development for CRI and CCSF.
 
 
 MUTUAL INFORMATION VS COMPLIANCE_FINAL
