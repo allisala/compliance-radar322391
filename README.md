@@ -38,13 +38,13 @@ flowchart LR
 
 ```
 ### Dataset overview
-We have four tables: departments (the main table distributing departments), high_risk_departments (subset of the main departments table, distrebuting only the departments that are associated with high risk), risk_summary_by_division (shows inforations anout devisions and devisions containing departments), and data_dictionary (gives a detailed meaning of the variables). From the full analysis of our variables we concluded that:
+We have four tables: `departments` (the main table distributing departments), `high_risk_departments` (subset of the main departments table, distrebuting only the departments that are associated with high risk), `risk_summary_by_division` (shows inforations anout devisions and devisions containing departments), and `data_dictionary` (gives a detailed meaning of the variables). From the full analysis of our variables we concluded that:
 
- 1.There are many variables that could possibly affect the non-compliance. However, reation_reason, secondary_function, dept_name will bring more noise than     information, therefore, should be dropped at the very early stages.
+1. There are many variables that could possibly affect the non-compliance. However, reation_reason, secondary_function, dept_name will bring more noise than     information, therefore, should be dropped at the very early stages.
 
- 2. A non-compliance is: as the dictionary table explains, there already exist two main scores assosiated with compliance and overall risk: compliance_score and  the overall_risk_score. What is the difference between them?
+2. A non-compliance is: as the dictionary table explains, there already exist two main scores assosiated with compliance and overall risk: compliance_score and  the overall_risk_score. What is the difference between them?
 
- 3. compliance_score is the overall compliance rating, so the compliance was already measures for the chosen department. overall_risk_score includes risks, but not only for non-compliance. Possibly also financial risk, operatrional risk, etc.
+3. compliance_score is the overall compliance rating, so the compliance was already measures for the chosen department. overall_risk_score includes risks, but not only for non-compliance. Possibly also financial risk, operatrional risk, etc.
 
 ### Dataset description
 Before beginning with the EDA, the data required significant preparation to ensure accuracy and interpretability:
