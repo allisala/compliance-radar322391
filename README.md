@@ -515,7 +515,8 @@ In conclusion: if we have high CRI and low CCSF for a department, this tells the
 
 ---
 
-## 7. Ethical Considerations
+# Results
+
 
 ![noncompliant_high_risk_with_ethical](images/noncompliant_high_risk_with_ethical.png)
 ![noncompliant_medium_risk_with_ethical](images/noncompliant_medium_risk_with_ethical.png)
