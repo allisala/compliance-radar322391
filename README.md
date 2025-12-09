@@ -114,8 +114,7 @@ We first observe the overall missingness. Many columns had 36–43% missing valu
 
 **A heatmap for visually inspect missing values across al columns.**
 
-<img width="943" height="653" alt="image" src="https://github.com/user-attachments/assets/5242636d-9ea6-45ac-ac4a-8d7fb0f69844" />
-
+![missing_values_table](images/missing_values_table.png)
 
   - **Missingness by department category**: when we grouped by dept_category we revealed a strong patter, which shows that Operational_Compliance accounts for the majority of missing data, with an overall missing rate of 83%. Financial_reporting and Risk_management, on the other hand contained far fewer missing values ~ 8%.
 This indicates that missigness is not random and it shows that it concentrated in departments dealing with Operational Compliance rules.
@@ -145,11 +144,9 @@ This indicates that missigness is not random and it shows that it concentrated i
 Therefore, all values for these departments were imputed with values that MADE them risky -> they appear risky by accident.
 **Therefore, we should drop all departments with missing division.**
 
-To make sure that data missingness is not correlated with risk, we check correlation between missing values and compliance or risk
+To make sure that data missingness is not correlated with risk, we check correlation between missing values and compliance or risk.
 
-
-<img width="858" height="669" alt="image" src="https://github.com/user-attachments/assets/b336e98c-2a42-4815-9b00-6b3804c19c7e" />
-
+![correlation_heatmap_numerical_variables](images/correlation_heatmap_numerical_variables.png)
 
 **Missing Data Imputation: Two Procedures**
 We tested two imputation strategies for `departments` and `high_risk_departments`:
@@ -173,7 +170,7 @@ Row-level similarity between corresponding departments. Division-level statistic
 **Final Imputation Choice and Updated Dataset**
 Following this decision, all missing values in both the departments and high_risk_departments tables were filled using the median for numerical fields and the mode for categorical ones. The final dataset retained 424 departments with complete information across all relevant analytical variables. This cleaned dataset now forms the foundation for subsequent modeling steps
 
-<img width="939" height="653" alt="image" src="https://github.com/user-attachments/assets/5a5d7319-f626-4edd-bf63-eceb7b710742" />
+![imputed_table](images/imputed_table.png)
 
 
 ### Encoding and Feature Exploration
@@ -213,8 +210,7 @@ $$
 
 **MUTUAL INFORMATION VS COMPLIANCE_FINAL**
 
-<img width="939" height="541" alt="image" src="https://github.com/user-attachments/assets/95b9472f-2504-4f26-bfcf-8f436ad62fda" />
-
+![mutual_information_of_features](images/mutual_information_of_features.png)
 
 **What we did so far**
 ```mermaid
@@ -241,11 +237,11 @@ flowchart TD
    
     We define non-compliance as a department scoring 55 or below, based on the distribution observed in the dataset. Using this threshold, we train three different classification models — Logistic Regression, Support Vector Classifier, and HistGradientBoosting — and evaluate them through cross-validation. Although all three models perform similarly, Logistic Regression stands out for its interpretability and high ROC-AUC. Predictions from this model allow us not only to classify departments but also to understand why each prediction is made.
    
-<img width="1279" height="349" alt="image" src="https://github.com/user-attachments/assets/afa0e12c-c8a7-4e0f-98db-4b4f330054ab" />
+![confusion_matrices](images/confusion_matrices.png)
 
 Given this combination of performance and interpretability, we select Logistic Regression as the final model. It offers the best balance between predictive quality, stability, and practical interpretability, making it the most suitable choice for our analysis.
 
-<img width="736" height="465" alt="image" src="https://github.com/user-attachments/assets/62a86bcb-518c-4e15-ad39-f10ce9d9085d" />
+![learning_curve](images/learning_curve.png)
 
 There are some signs of overfitting, however, the gap between training and test is still moderate (about 0.026).
 
@@ -289,7 +285,7 @@ In practical terms, the non_compliance_risk variable shows how close a departmen
     To convert the model’s predicted non_compliance_risk into clear categories (Low / Medium / High), we cluster all risk scores using K-Means (k = 3). The algorithm forms three natural groups and gives us three centroids: Low-risk centroid = 0.05, Medium-risk centroid = 0.45, High-risk centroid = 0.90.
   
 
-<img width="953" height="491" alt="image" src="https://github.com/user-attachments/assets/5b480f5b-73e2-4373-a059-c94d87097b4c" />
+![noncomplaint_risks_clusters](images/noncomplaint_risks_clusters.png)
 
 
 We convert the three K-Means centroids into practical thresholds by taking the midpoint between them, which gives 0.27 (for the Low-Medium boundary) and 0.69 (for the Medium-High boundary). Using these data-driven cutoffs, departments with risk < 0.27 are classified as Low Risk, those between 0.27 and 0.69 as Medium Risk, and those with risk ≥ 0.69 as High Risk.
@@ -300,10 +296,11 @@ We convert the three K-Means centroids into practical thresholds by taking the m
    
     The final report generated by this approach includes the predicted compliance status, the non-compliance risk score, the assigned risk category, the improvement target, the top drivers of risk, and a customized action plan. This creates a complete decision-support tool that integrates predictive modeling with practical recommendations. By combining statistical modeling with interpretability, the framework helps the organization identify emerging risks early and intervene in a targeted and effective way.
 
-<img width="1285" height="144" alt="image" src="https://github.com/user-attachments/assets/b4f216a4-79e1-4be3-953a-db65ad2b1fe6" />
-<img width="1285" height="101" alt="image" src="https://github.com/user-attachments/assets/2ba9b63a-dbf6-4ae3-864f-4c1682c5824a" />
-<img width="1285" height="105" alt="image" src="https://github.com/user-attachments/assets/5287f372-aa0d-4201-81ac-3389b8dfba70" />
-<img width="1285" height="38" alt="image" src="https://github.com/user-attachments/assets/927611aa-625d-4832-9523-7a51e238125d" />
+![noncompliant_high_risk](images/noncompliant_high_risk.png)
+![noncompliant_medium_risk](images/noncompliant_medium_risk.png)
+![compliant_medium_risk](images/compliant_medium_risk.png)
+![compliant_low_risk](images/compliant_low_risk.png)
+
 
  ----
 
@@ -435,7 +432,6 @@ Departments flagged under this check do not need more training or oversight; the
 5. **Use flagged cases to improve fairness and transparency.**
 These insights can inform fairness audits, guide internal policy reviews and help leadership demonstrate that risk assessments are being used responsibly and ethically.
 
-
 ---
 
 **SECOND EXPERIMENTAL APPROACH**
@@ -497,14 +493,14 @@ $$
 **The CCSF_raw** score is simply the difference between these two components. Departments with strong audit performance, experienced managers, and consistent training tend to score higher, while departments showing structural weaknesses or operational risks tend to score lower.
 The raw CCSF is then scaled to a 1–100 range for easier interpretation. Across the full dataset, **CCSF scores range from 0 to 100**, with an average around 48. Using this distribution, the departments naturally fall into three groups: low, medium, and high compliance risk.
 
-<img width="960" height="617" alt="image" src="https://github.com/user-attachments/assets/6fb324dd-e7cf-43df-b699-1d74027a21e0" />
+![normalized_factor_weights](images/normalized_factor_weights.png)
 
 **2.4 Why CCSF Matters**
 While CRI answers the question, “How risky does a department look?”, CCSF answers the question, “How compliant is a department actually?” The CCSF helps managers identify reasons for why compliance may be weak, whether it is due to low training levels, poor audit scores, insufficient oversight, or operational challenges. Employees can also see how their actions directly improve compliance strength, since increases in training, experience, and process quality have visible effects on the CCSF.
 
 **2.5 A linear regression of CRI and CCSF** shows a clear negative relationship: as risk increases, compliance decreases. A linear regression confirms this pattern, with a strong negative correlation of –0.81. This means the two indices move in opposite directions, which is exactly what we expect if both are capturing meaningful organizational behavior.
 
-<img width="943" height="545" alt="image" src="https://github.com/user-attachments/assets/6028283a-0245-42c4-b451-4b1aea9d202c" />
+![linear_regression_cri_ccsf](images/linear_regression_cri_ccsf.png)
 
 **When CRI is high and CCSF is low, the message is clear: this department needs attention. Managers can use the two scores together to prioritize audits, target interventions, allocate resources, and plan improvement programs in a strategic way.**
 
@@ -520,7 +516,11 @@ In conclusion: if we have high CRI and low CCSF for a department, this tells the
 ---
 
 ## 7. Ethical Considerations
-(*Bias, compliance, privacy*)
+
+![noncompliant_high_risk_with_ethical](images/noncompliant_high_risk_with_ethical.png)
+![noncompliant_medium_risk_with_ethical](images/noncompliant_medium_risk_with_ethical.png)
+![compliant_medium_risk_with_ethical](images/compliant_medium_risk_with_ethical.png)
+
 
 ## 8. Project Structure
 (*How the files are organized*)
