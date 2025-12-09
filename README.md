@@ -547,6 +547,6 @@ While our project is a huge step forward in identifying risk, it has limits and 
 
 | Link | Description |
 | --- | --- |
-| [Figma Visualisation]([https://vk.com/distributedclass_2024](https://www.figma.com/make/xzKM0gK3fdbSRfoWRittTV/Compliance-Tracking-Interface?node-id=0-1&t=EsSUHWPY2Qk1AZox-1)) | UX/UI Visualisation |
+| [Figma Visualisation](https://www.figma.com/make/xzKM0gK3fdbSRfoWRittTV/Compliance-Tracking-Interface?node-id=0-1&t=EsSUHWPY2Qk1AZox-1) | UX/UI Visualisation |
 
 Machine Learning project – Compliance Radar
