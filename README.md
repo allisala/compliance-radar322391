@@ -257,10 +257,6 @@ We convert the three K-Means centroids into practical thresholds by taking the m
 
 > [!TIP]
 > Interpretation Guide below explains, what the model is telling us about each department and how to use the results for decision-making. \
-> 1\. High-Risk & Non-Compliant \
-> 2\. Medium-Risk & Non-Compliant \
-> 3\. Compliant, but Medium Risk \
-> 4\. Compliant & Low Risk
 ---
 
 - **Condition 1 — High-Risk & Non-Compliant**
