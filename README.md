@@ -111,6 +111,9 @@ We first observe the overall missingness. Many columns had 36–43% missing valu
 
 A heatmap for visually inspect missing values across al columns.
 
+<img width="943" height="653" alt="image" src="https://github.com/user-attachments/assets/5242636d-9ea6-45ac-ac4a-8d7fb0f69844" />
+
+
   Missingness by department category: when we grouped by dept_category we revealed a strong patter, which shows taht Operational_Compliance accounts for the majority of missing data, with an overall missing rate of 83%. Financial_reporting and Risk_management, on the other hand contained far fewer missing values ~ 8%.
 This indicates that missigness is not random and it shows that it concentrated in departments dealing with Operational Compliance rules.
 
@@ -166,6 +169,13 @@ Row-level similarity between corresponding departments. Division-level statistic
 Both procedures produced very similar division-level aggregates.
 However, Procedure 2 preserved the original distributions of numerical variables more faithfully.
 We adopted Procedure 2 for final imputation.
+
+<img width="939" height="653" alt="image" src="https://github.com/user-attachments/assets/5a5d7319-f626-4edd-bf63-eceb7b710742" />
+
+
+MUTUAL INFORMATION VS COMPLIANCE_FINAL
+<img width="939" height="541" alt="image" src="https://github.com/user-attachments/assets/95b9472f-2504-4f26-bfcf-8f436ad62fda" />
+
 
 **What we did so far**
 ```mermaid
