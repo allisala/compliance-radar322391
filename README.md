@@ -517,10 +517,17 @@ In conclusion: if we have high CRI and low CCSF for a department, this tells the
 
 # Results
 
-
+NONCOMPLIANT ((HIGH RISKS)
 ![noncompliant_high_risk_with_ethical](images/noncompliant_high_risk_with_ethical.png)
+![noncompliant_high_risk_final](images/noncompliant_high_risk_final.png)
+
+NONCOMPLIANT ((MEDIUM RISKS)
 ![noncompliant_medium_risk_with_ethical](images/noncompliant_medium_risk_with_ethical.png)
+![noncompliant_medium_risk_final](images/noncompliant_medium_risk_final.png)
+
+COMPLIANT (MEDIUM RISKS)
 ![compliant_medium_risk_with_ethical](images/compliant_medium_risk_with_ethical.png)
+![compliant_low_risk_final](images/compliant_low_risk_final.png)
 
 
 # Final Conclusion
