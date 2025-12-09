@@ -56,7 +56,7 @@ These included columns such as `remediation_plan_active`, `executive_support`, `
 To prevent Pandas errors and ensure proper statistical treatment, all these fields were converted to numeric (0/1), which ensures consistency across operations like aggregation, plotting, and modeling.
 
  **Removal of Irrelevant or Non-Useful Columns**
-Certain variables did not contribute meaningful information to the analysis or modeling process. We droped those values because their reasoning is qualitative and not data-driven, because they do not have predictive features, meaning that the model would simply memorize department names, and not learn generalizable patterns. Such variables increase nosie and create overfitting and also it helps avoid accidental data leakage. So we droped:
+Certain variables did not contribute meaningful information to the analysis or modeling process. We droped those values because their reasoning is qualitative and not data-driven, because they do not have predictive features, meaning that the model would simply memorize department names, and not learn generalizable patterns. Such variables increase noise and create overfitting and also it helps avoid accidental data leakage. So we droped:
  1. `dept_name`
  2. `econdary_function`
  3. `creation_reason`
@@ -85,26 +85,26 @@ Before performing modeling or statistical interpretation, we conducted an Explor
 EDA helps us to detect data quality issues, as well as identifying outliers and unusual patterns that may distort modeling, understand variable distributions and prepare the dataset for preprocessing and feature engineering, because ML models rely heavily on clean, correctly formatted data, EDA is a critical step before modeling.
 
   **Outlier handling**
-Here, we reviewed all variable types for unrealistic or extreme values. Only a few true otliers were identified and corrected.
+Here, we reviewed all variable types for unrealistic or extreme values. Only a few true outliers were identified and corrected.
 
  - **Outliers for numerical variables:**
-    1. audir_score_q1: one observation showed values under < 30, which fall outside the normal audit scoring range and this was set to NaN.
-    2. overall_risk_score: one outlier found, which was > 100, and was set to NaN
-    3. compliance_score_final: 2 outliers, since only those points fall under 20 under around 400 observations, so we flag them.
+    1. `audir_score_q1`: one observation showed values under < 30, which fall outside the normal audit scoring range and this was set to NaN.
+    2. `overall_risk_score`: one outlier found, which was > 100, and was set to NaN
+    3. `compliance_score_final`: 2 outliers, since only those points fall under 20 under around 400 observations, so we flag them.
 
- - **Outliers for boolean variables:** all boolean field contained only valid binary values, no action required.
+ - **Outliers for boolean variables:** all boolean fields contained only valid binary values, no action required.
 
- - **Outliers for categorical variables:** here we did a frequency check and it showed that all categories occured with reasonable frequency, > 2%, which means that even the smallest categories are not small enough to combine them with some other categores so we did not modify anything.
+ - **Outliers for categorical variables:** here we did a frequency check and it showed that all categories occured with reasonable frequency, > 2%, which means that even the smallest categories are not small enough to combine them with some other categories so we did not modify anything.
 
 
 **Logical Consistency Checks**
 We wanted to see if there are some logical inconsistencies and we checked cross-variable consistency, especially between audit and compliance scores.
-The rule that we examined was if audit scores exist (Q1 or Q2), the final compliance score should also exist. We found **22 inconsistent rows** where compliance_score_final is missing, but at least one of audit_score_q1 or audit_score_q2 is present. **Of these, 8 departments are flagged as high risk**. These 8 were kept, and we added a flag: audit_scores_missing = 1 for them. The remaining 14 rows (non–high-risk) were dropped as inconsistent and low-value.
+The rule that we examined was if audit scores exist (Q1 or Q2), the final compliance score should also exist. We found **22 inconsistent rows** where `compliance_score_final` is missing, but at least one of `audit_score_q1` or `audit_score_q2` is present. **Of these, 8 departments are flagged as high risk**. These 8 were kept, and we added a flag: `audit_scores_missing` = 1 for them. The remaining 14 rows (non–high-risk) were dropped as inconsistent and low-value.
 
 ### Summary statistics
 
 **We did summary stats for numerical columns and we found some very important features:**
-  1. **compliance_score_final ranges from 0 - 100, with 25th percentile at 55.** This means the bottom 25% of deparmtens score which if 55 or lower are clearly below the typical compliance leves. Moreover, because we need to define non-compliance, we set non-compliance = compliance_score_final <= 55, focusing on the departments most at risk. Low Compliance: 0 - 55, Moderate Compliance: 55–75, High Compliance: 75-100.
+  1. **compliance_score_final ranges from 0 - 100, with 25th percentile at 55.** This means the bottom 25% of departments score which if 55 or lower are clearly below the typical compliance leves. Moreover, because we need to define non-compliance, we set non-compliance = compliance_score_final <= 55, focusing on the departments most at risk. Low Compliance: 0 - 55, Moderate Compliance: 55–75, High Compliance: 75-100.
   2. **for overall_risk_score, we are most interested in finding very high scores rather than very low.** Following the same logic as for the compliance_score_final, we obtain Low Risk: 10 – 20 (up to median), Moderate Risk: 21 – 34 (median to 75th percentile) which are departments that may need attention but are not immediately critical, High Risk: 35 – 100 (above 75th percentile), which are departments likely to have compliance issues, operational exposure, or financial risks.
 These classifications will be used further for modeling.
 
@@ -112,23 +112,23 @@ These classifications will be used further for modeling.
 
 We first observe the overall missingness. Many columns had 36–43% missing values in the raw departments table. We saw that the key ID variables (dept_id, dept_category) are complete, which allowed us to group by category.
 
-A heatmap for visually inspect missing values across al columns.
+**A heatmap for visually inspect missing values across al columns.**
 
 <img width="943" height="653" alt="image" src="https://github.com/user-attachments/assets/5242636d-9ea6-45ac-ac4a-8d7fb0f69844" />
 
 
-  - **Missingness by department category**: when we grouped by dept_category we revealed a strong patter, which shows taht Operational_Compliance accounts for the majority of missing data, with an overall missing rate of 83%. Financial_reporting and Risk_management, on the other hand contained far fewer missing values ~ 8%.
+  - **Missingness by department category**: when we grouped by dept_category we revealed a strong patter, which shows that Operational_Compliance accounts for the majority of missing data, with an overall missing rate of 83%. Financial_reporting and Risk_management, on the other hand contained far fewer missing values ~ 8%.
 This indicates that missigness is not random and it shows that it concentrated in departments dealing with Operational Compliance rules.
 
  - **Rows with missing devision have 100% missing analytical data and all 244 rows belong to the Operational_Compliance category. These rows cannot be used for modeling or recovery and are being removed.**
 
- - Although most Operational_Compliance records are fully missing, 12 departments in this category have at least some avalible data. However, we cannot determine why they differ fromm other departments based on the current dataset.
+ - Although most Operational_Compliance records are fully missing, 12 departments in this category have at least some available data. However, we cannot determine why they differ from other departments based on the current dataset.
 
- - **Before we droped rows with fully missing data, we needed to verify whether any appear in the high_risk_departments table. This ensured we do not remove departments that are flaged as high risk and therefore important for our analysis.**
+ - **Before we dropped rows with fully missing data, we needed to verify whether any appear in the high_risk_departments table. This ensured we do not remove departments that are flaged as high risk and therefore important for our analysis.**
 
  - **We concluded that the missingness is systematic and not random.** It is linked to Operational_Compliance and missing division information. Rows with complitely missing data (missing division), should be dropped, as they cannot contribute meaningfully to analysis or modeling. 
   
-  - Before choosing a strategy for handelling missing values, we needed to determine whether missigness is related to predictive of key outcome variables such as: `compliance_final_score` and `overall_risk_score`. If missingness correlates stronly with compliance or risk, then dropping
+  - Before choosing a strategy for handelling missing values, we needed to determine whether missigness is related to predictive of key outcome variables such as: `compliance_final_score` and `overall_risk_score`. If missingness correlates strongly with compliance or risk, then dropping
 **We can drop the rows with missing division information AND even those present in the high_risk_departments. Why? Because of the following reasoning:**
 ```
 - Do all departments with missing values appear in the high_risk_departments? 
@@ -142,7 +142,7 @@ This indicates that missigness is not random and it shows that it concentrated i
 - Did these departments appear as risky because of the manual imputation?
 - Yes. So we initially didn't know anything about these departments and we know that the full missing data does not make a department risky.
 ```
-Therefore, all values for these departments were imputed with values that MADE them risky -> they appear as risky by accident.
+Therefore, all values for these departments were imputed with values that MADE them risky -> they appear risky by accident.
 **Therefore, we should drop all departments with missing division.**
 
 To make sure that data missingness is not correlated with risk, we check correlation between missing values and compliance or risk
@@ -154,7 +154,7 @@ To make sure that data missingness is not correlated with risk, we check correla
 **Missing Data Imputation: Two Procedures**
 We tested two imputation strategies for `departments` and `high_risk_departments`:
 
-**Procedure 1:**   High-risk-aware imputation and for departments that appear in both table we use values from high_risk_departments to fill missing fields in departments when available. 
+**Procedure 1:**   High-risk-aware imputation and for departments that appear in both table we use values from `high_risk_departments` to fill missing fields in departments when available. 
 
 For remaining missing values:
 Numerical --> median.
@@ -201,8 +201,8 @@ $$
 $$
 
 **We define two thresholds:**
-- Certain multicollinearity: VIF>= 10
-- Possible multicollinearity: VIF>=5
+- Certain multicollinearity: VIF >= 10
+- Possible multicollinearity: VIF >= 5
 **For the variables with VIF greater than 10 we will drop these variables, since they are unreliable to use for modeling.**
 
 ### Mutual Information – MI
