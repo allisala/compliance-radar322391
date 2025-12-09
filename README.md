@@ -130,7 +130,7 @@ Therefore, all values for these departments were imputed with values that MADE t
 Therefore, we should drop all departments with missing division.
 To make sure that data missingness is not correlated with risk, we check correlation between missing values and compliance or risk
    
-***----maybe we can add the heatmap here??***
+***----heatmap here??***
 
 <img width="858" height="669" alt="image" src="https://github.com/user-attachments/assets/b336e98c-2a42-4815-9b00-6b3804c19c7e" />
 
@@ -140,15 +140,15 @@ We tested two imputation strategies for departments and high_risk_departments:
 **Procedure 1:**  High-risk-aware imputation and for departments that appear in both table we use values from high_risk_departments to fill missing fields in departments when available. 
 
 For remaining missing values:
-Numerical → median.
-Categorical / boolean → mode.
+Numerical --> median.
+Categorical / boolean --> mode.
 
 Apply the same median/mode rules to high_risk_departments.
 
 **Procedure 2:** Pure statistical imputation and Ignore cross-table copying.
 For both tables:
-Numerical → median.
-Categorical / boolean → mode.
+Numerical --> median.
+Categorical / boolean --> mode.
 
 **We compared:**
 Row-level similarity between corresponding departments. Division-level statistics (e.g., average compliance, risk scores, violations). Distribution shapes of numerical variables.
