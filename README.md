@@ -188,6 +188,47 @@ flowchart TD
     The model outputs a probability value, which we interpret as the non_compliance_risk. A higher score indicates that a department is close to falling below the compliance threshold, while a lower score means the department is operating safely. Because this score is continuous, it gives a more nuanced picture than a simple “compliant/non-compliant” flag: departments near the boundary can be monitored early, before they officially become non-compliant.
 
 ---
+
+4.1. Target Risk Level (Using K-Means Thresholds)
+   
+To convert the model’s predicted non_compliance_risk into clear categories (Low / Medium / High), we cluster all risk scores using K-Means (k = 3). The algorithm forms three natural groups and gives us three centroids: Low-risk centroid = 0.05, Medium-risk centroid = 0.45, High-risk centroid = 0.90.
+
+<img width="953" height="491" alt="image" src="https://github.com/user-attachments/assets/5b480f5b-73e2-4373-a059-c94d87097b4c" />
+
+We convert the three K-Means centroids into practical thresholds by taking the midpoint between them, which gives 0.27 (for the Low-Medium boundary) and 0.69 (for the Medium-High boundary). Using these data-driven cutoffs, departments with risk < 0.27 are classified as Low Risk, those between 0.27 and 0.69 as Medium Risk, and those with risk ≥ 0.69 as High Risk.
+
+<img width="1285" height="144" alt="image" src="https://github.com/user-attachments/assets/b4f216a4-79e1-4be3-953a-db65ad2b1fe6" />
+<img width="1285" height="101" alt="image" src="https://github.com/user-attachments/assets/2ba9b63a-dbf6-4ae3-864f-4c1682c5824a" />
+<img width="1285" height="105" alt="image" src="https://github.com/user-attachments/assets/5287f372-aa0d-4201-81ac-3389b8dfba70" />
+<img width="1285" height="38" alt="image" src="https://github.com/user-attachments/assets/927611aa-625d-4832-9523-7a51e238125d" />
+
+ ----
+Interpretation Guide explains, what the model is telling us about each department and how to use the results for decision-making.
+
+ ----
+
+- **Condition 1 — High-Risk & Non-Compliant**
+
+  The department is not meeting compliance requirements, and the model shows there is a very high chance it will fail again if nothing changes.
+    This is a critical situation. The recommended actions highlight the quickest and most effective steps to reduce the risk. These are practical changes the department can realistically make right now.
+
+- **Condition 2 — Medium-Risk & Non-Compliant**
+  
+    The department failed compliance this year, but it is not far from recovering. The risk of failing again is moderate.
+    With the improvements listed, the department can realistically move into the Low-Risk zone and meet compliance next cycle. These actions help prevent repeated issues and stabilize performance.
+
+- **Condition 3 — Compliant, but Medium Risk**
+
+    The department passed compliance this year, but the model sees a moderate chance that it could fail next time if nothing improves.
+    This is not an emergency, but it requires proactive improvement. By following the recommended actions, the department can move safely into the Low-Risk zone and maintain compliance in the future.
+
+- **Condition 4 — Compliant & Low Risk**
+
+    The department is meeting compliance requirements and has a very low probability of becoming non-compliant next cycle.
+    No major changes are needed. This is an example of stable, healthy performance, and the department simply needs to maintain current practices.
+
+  
+---
 5. Understanding What Drives the Risk
    
     Since Logistic Regression produces explicit coefficients, we can identify the strongest drivers of non-compliance for every department. Positive coefficients are variables that increase the risk, while negative coefficients reduce it. The magnitude of each coefficient shows how impactful that variable is. This transforms the model from a prediction tool into a diagnostic tool, allowing us to understand which organizational behaviors contribute the most to compliance failures.
@@ -204,6 +245,11 @@ flowchart TD
 
 ---
 
+
+
+**SECOND APPROACH**
+---
+**Constructing a Two-Component Compliance Index Using Random Forest (????)**
 
 
 ## 7. Tools & Technologies
