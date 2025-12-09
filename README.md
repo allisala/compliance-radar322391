@@ -443,26 +443,29 @@ The Random Forest model performed strongly, achieving 0.94 accuracy on the train
 ---
 
 **2.1 Introduction**
-After building the CRI to measure risk, we introduce a second variable, which is the CCSF which looks at the factors that indicate strong or weak compliance performance. Together, CRI and CCSF give a balanced understanding of how each department behaves, allowing managers to evaluate risk and compliance with equal clarity.
+After building the CRI to measure risk, we introduce a second variable, which is the CCSF. This looks at the factors that indicate strong or weak compliance performance. Together, CRI and CCSF give a balanced understanding of how each department behaves, allowing managers to evaluate likeliness of risk and compliance equally.
 
 **2.2 Concept and Approach**
-The CCSF follows the same philosophical approach as the CRI. It is constructed by comparing departments above and below a defined compliance threshold. Earlier analysis using logistic regression showed that a score of 55 is a reliable benchmark separating compliant from non-compliant departments. Using this threshold, we divided 424 departments into 284 compliant and 140 non-compliant groups.
+The CCSF follows the same framework as the CRI. It is constructed by comparing departments above and below a defined compliance threshold. Earlier analysis using logistic regression showed that a score of 55 is a reliable benchmark separating compliant from non-compliant departments. Using this threshold, we divided 424 departments into 284 compliant and 140 non-compliant groups.
 We then examined the mean gaps between these two groups to identify which variables truly distinguish strong compliance from weak compliance. Factors where higher values appeared consistently in compliant departments were treated as “good,” while factors more common in non-compliant departments were labeled as “bad.” From this comparison, we selected the five most meaningful variables on each side, ensuring that the CCSF is built only from measures that are both statistically significant and easy to interpret.
 
 **2.3 Constructing the CCSF**
 To estimate how important each factor is, we trained a Random Forest classifier on the compliant vs. non-compliant dataset. The model performed well, showing perfect accuracy on training data and over 90% accuracy on the test set. This confirms that the selected variables meaningfully separate compliant from non-compliant departments.
-The model’s Gini importances (tells us which variables are best at separating categories) were turned into weights, separately for good and bad factors, and each set was normalized so that the weights sum to one. These weights allow us to compute two components for every department: a weighted good score and a weighted bad score. **The CCSF_raw** score is simply the difference between these two components. Departments with strong audit performance, experienced managers, and consistent training tend to score higher, while departments showing structural weaknesses or operational risks tend to score lower.
+The model’s Gini importances (tells us which variables are best at separating categories) were turned into weights, separately for good and bad factors, and each set was normalized so that the weights sum to one. These weights allow us to compute two components for every department: a weighted good score and a weighted bad score. 
+
+$$
+\text{Total Weighted Score} = \sum_{i=1}^{n} (\text{Weight}_i \times \text{Rating}_i)
+$$
+
+**The CCSF_raw** score is simply the difference between these two components. Departments with strong audit performance, experienced managers, and consistent training tend to score higher, while departments showing structural weaknesses or operational risks tend to score lower.
 The raw CCSF is then scaled to a 1–100 range for easier interpretation. Across the full dataset, **CCSF scores range from 0 to 100**, with an average around 48. Using this distribution, the departments naturally fall into three groups: low, medium, and high compliance risk.
 
 <img width="960" height="617" alt="image" src="https://github.com/user-attachments/assets/6fb324dd-e7cf-43df-b699-1d74027a21e0" />
 
 **2.4 Why CCSF Matters**
-While CRI answers the question, “How risky does this department look?”, CCSF answers the equally important question, “How compliant is this department actually performing?” The CCSF helps managers understand why compliance may be weak—whether it is due to low training levels, poor audit scores, insufficient oversight, or operational challenges. Employees can also see how their actions directly improve compliance strength, since increases in training, experience, and process quality have visible effects on the CCSF.
+While CRI answers the question, “How risky does a department look?”, CCSF answers the question, “How compliant is a department actually?” The CCSF helps managers identify reasons for why compliance may be weak, whether it is due to low training levels, poor audit scores, insufficient oversight, or operational challenges. Employees can also see how their actions directly improve compliance strength, since increases in training, experience, and process quality have visible effects on the CCSF.
 
-**2.5 Integrating CCSF with CRI**
-Both indices are merged into a single departmental view to make comparison straightforward. For example, a department may show a low CRI but a mid-range CCSF, suggesting good performance with room for improvement. A high CRI paired with a low CCSF signals a department requiring close monitoring and targeted support. The integrated dataset offers managers a full picture of each department’s behavior, risk exposure, and compliance strength.
-
-**A scatterplot of CRI and CCSF** shows a clear negative relationship: as risk increases, compliance decreases. A linear regression confirms this pattern, with a strong negative correlation of –0.81. This means the two indices move in opposite directions, which is exactly what we expect if both are capturing meaningful organizational behavior.
+**2.5 A linear regression of CRI and CCSF** shows a clear negative relationship: as risk increases, compliance decreases. A linear regression confirms this pattern, with a strong negative correlation of –0.81. This means the two indices move in opposite directions, which is exactly what we expect if both are capturing meaningful organizational behavior.
 
 <img width="943" height="545" alt="image" src="https://github.com/user-attachments/assets/6028283a-0245-42c4-b451-4b1aea9d202c" />
 
