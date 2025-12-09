@@ -284,9 +284,56 @@ We convert the three K-Means centroids into practical thresholds by taking the m
 
 
 **SECOND APPROACH**
----
-**Constructing a Two-Component Compliance Index Using Random Forest (????)**
 
+**1. Introduction**
+We created two new variables: 
+1. The Composite Risk Index (CRI) which measures how strongly a department resembles historically high-risk units based on operational, behavioral, and audit signals.
+2. The Composite Compliance Strength Factor (CCSF) captures the underlying strength of a department’s compliance practices.
+ 
+ By looking at risk and compliance together—not as isolated numbers—we get a more accurate picture of how each department operates and where intervention or support is needed.
+
+**1.1 What is the CRI?**
+The CRI (Composite Risk Index) is a single, data-driven score that summarizes how risky a department appears based on multiple opperational, behavioral, audit and performace signals, It combines several 'bad' risk factores and several 'good' protective factors into one standardized risk number, scaled 1-100.
+
+
+**1.2 How do we choose the variables for the CRI and Why Build an Index?**
+in order to build a meaningful risk index, every variable must be placed into one of the buckets:
+1. Higher value = more risk
+2. Worse performance = more chances of compliance failure and these push CRI upward, and visa versa.
+3. Using the Driver Indetification Table, we compare risk_avg and normal_average. The higher the risk, the higher the coefficients, the worse the performance of the departments. If the av_risk is negative, or smaller than the normal_risk, that means that the deprtemnts does not belong into the risky category, and it is glaged as low risk department. Moreover, Departmental risk is never driven by a single factor. It emerges from patterns across many activities and behaviors. A combined index makes it possible to compare departments consistently, identify early warning signs, and support better decisions around monitoring and resource allocation. Instead of guessing, we let the data show which signals matter most.
+
+**1.3 Method Overview**
+We began by comparing 198 high-risk departments with 226 normal ones to identify meaningful differences. A Random Forest model was then used to learn which variables best separate risky departments from safe ones. Based on statistical patterns and ethical review, variables where higher values increase risk were classified as “bad factors,” while variables associated with stronger compliance were labeled as “good factors.” The model’s feature importances were converted into weights, allowing us to create two composite indicators for every department: a weighted Bad_Score and a weighted Good_Score. These two scores capture how strongly a department resembles past high-risk behavior versus strong compliance behavior.
+
+**1.4 Building the CRI (Composite Risk Index)**
+The CRI is calculated by subtracting the Good_Score from the Bad_Score. A department with many risk-raising signals and weak compliance indicators will have a positive CRI, while a department showing strong compliance behavior will have a negative one. The **raw CR**I is then scaled onto a 1–100 range so it can be easily interpreted and compared. Departments naturally fall into three groups—Low, Medium, and High risk—based on the distribution of **CRI_1_100**. In practice, a department with frequent violations and poor audit outcomes will appear at the high end of the scale, while one with strong training, healthy processes, and solid audit scores will appear near the low end.
+
+**1.5 Model Performance**
+The Random Forest model performed strongly, achieving 0.94 accuracy on the training set and 0.892 on the test set. The ROC AUC of 0.862 shows that the model is consistently able to distinguish high-risk from normal departments. These results confirm that the CRI is grounded in meaningful patterns and offers a reliable way to evaluate departmental risk.
+
+**Creating the CCSF: Composite Compliance Strength Factor**
+
+**2.1 Introduction**
+After building the CRI to measure risk, we introduce a second variable, which is the CCSF which looks at the factors that indicate strong or weak compliance performance. Together, CRI and CCSF give a balanced understanding of how each department behaves, allowing managers to evaluate risk and compliance with equal clarity.
+
+**2.2 Concept and Approach**
+The CCSF follows the same philosophical approach as the CRI. It is constructed by comparing departments above and below a defined compliance threshold. Earlier analysis using logistic regression showed that a score of 55 is a reliable benchmark separating compliant from non-compliant departments. Using this threshold, we divided 424 departments into 284 compliant and 140 non-compliant groups.
+We then examined the mean gaps between these two groups to identify which variables truly distinguish strong compliance from weak compliance. Factors where higher values appeared consistently in compliant departments were treated as “good,” while factors more common in non-compliant departments were labeled as “bad.” From this comparison, we selected the five most meaningful variables on each side, ensuring that the CCSF is built only from measures that are both statistically significant and easy to interpret.
+
+**2.3 Constructing the CCSF**
+To estimate how important each factor is, we trained a Random Forest classifier on the compliant vs. non-compliant dataset. The model performed well, showing perfect accuracy on training data and over 90% accuracy on the test set. This confirms that the selected variables meaningfully separate compliant from non-compliant departments.
+The model’s Gini importances (tells us which variables are best at separating categories) were turned into weights, separately for good and bad factors, and each set was normalized so that the weights sum to one. These weights allow us to compute two components for every department: a weighted good score and a weighted bad score. **The CCSF_raw** score is simply the difference between these two components. Departments with strong audit performance, experienced managers, and consistent training tend to score higher, while departments showing structural weaknesses or operational risks tend to score lower.
+The raw CCSF is then scaled to a 1–100 range for easier interpretation. Across the full dataset, **CCSF scores range from 0 to 100**, with an average around 48. Using this distribution, the departments naturally fall into three groups: low, medium, and high compliance risk.
+
+**2.4 Why CCSF Matters**
+While CRI answers the question, “How risky does this department look?”, CCSF answers the equally important question, “How compliant is this department actually performing?” The CCSF helps managers understand why compliance may be weak—whether it is due to low training levels, poor audit scores, insufficient oversight, or operational challenges. Employees can also see how their actions directly improve compliance strength, since increases in training, experience, and process quality have visible effects on the CCSF.
+
+**2.5 Integrating CCSF with CRI**
+Both indices are merged into a single departmental view to make comparison straightforward. For example, a department may show a low CRI but a mid-range CCSF, suggesting good performance with room for improvement. A high CRI paired with a low CCSF signals a department requiring close monitoring and targeted support. The integrated dataset offers managers a full picture of each department’s behavior, risk exposure, and compliance strength.
+
+**A scatterplot of CRI and CCSF** shows a clear negative relationship: as risk increases, compliance decreases. A linear regression confirms this pattern, with a strong negative correlation of –0.81. This means the two indices move in opposite directions, which is exactly what we expect if both are capturing meaningful organizational behavior.
+
+**When CRI is high and CCSF is low, the message is clear: this department needs attention. Managers can use the two scores together to prioritize audits, target interventions, allocate resources, and plan improvement programs in a strategic way.**
 
 ## 7. Tools & Technologies
 (*Python, Pandas, Jupyter, etc.*)
