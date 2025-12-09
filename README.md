@@ -171,11 +171,7 @@ flowchart TD
 
 
 
-## 5. Current Findings
-(*Only 2–3 early insights — can fill later!*)
-
-## 6. Next Steps
-(*Modeling, feature engineering, etc.*)
+# **Methods**
 
 **FIRST APPROACH**
 ---
@@ -335,20 +331,17 @@ Both indices are merged into a single departmental view to make comparison strai
 
 **When CRI is high and CCSF is low, the message is clear: this department needs attention. Managers can use the two scores together to prioritize audits, target interventions, allocate resources, and plan improvement programs in a strategic way.**
 
-## 7. Tools & Technologies
-(*Python, Pandas, Jupyter, etc.*)
-
-## 8. Ethical Considerations
+## 7. Ethical Considerations
 (*Bias, compliance, privacy*)
 
-## 9. Project Structure
+## 8. Project Structure
 (*How the files are organized*)
 
-## 10. Contributors
+## 9. Contributors
 - Lamina Alisa
-- Kopalina Maiia
+- Kopalina Maiia, 321891
 - Filippa Gronberg
-- Evelina Ristovska 315951
+- Evelina Ristovska, 315951
 
 
 | Link | Description |
