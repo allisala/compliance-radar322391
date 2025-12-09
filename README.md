@@ -1,12 +1,12 @@
 # Compliance Radar
 Machine Learning project
 
-## 1. Introduction
+# **Introduction**
 This project focuses on understanding organizational compliance, specifically the factors that influence whether a department follows or deviates from company rules. Although the precise rules are not defined, the dataset provides a rich set of operational, structural, managerial, and behavioral indicators that reflect how departments function and how vulnerable they may be to compliance failures.
 The main objective of the project is to analyze these indicators to uncover patterns, risk factors, and drivers of non-compliance. By examining both high-risk and standard departments, we aim to identify the organizational characteristics most closely associated with low compliance scores and elevated risk levels.
 A secondary goal is to evaluate whether existing internal classifications — such as the high-risk department list — align with measurable compliance performance trends across the organization.
 
-## 2. Project Overview Map
+## Project Overview Map
 ```mermaid
 flowchart LR
     A[Dataset] --> B[EDA]
@@ -29,7 +29,7 @@ flowchart LR
     class E insight;
 
 ```
-### 3 Dataset overview
+### Dataset overview
 We have four tables: departments (the main table distributing departments), high_risk_departments (subset of the main departments table, distrebuting only the departments that are associated with high risk), risk_summary_by_division (shows inforations anout devisions and devisions containing departments), and data_dictionary (gives a detailed meaning of the variables). From the full analysis of our variables we concluded that:
 
  1.There are many variables that could possibly affect the non-compliance. However, reation_reason, secondary_function, dept_name will bring more noise than     information, therefore, should be dropped at the very early stages.
@@ -38,7 +38,7 @@ We have four tables: departments (the main table distributing departments), high
 
  3. compliance_score is the overall compliance rating, so the compliance was already measures for the chosen department. overall_risk_score includes risks, but not only for non-compliance. Possibly also financial risk, operatrional risk, etc.
 
-### 4. Dataset description
+### Dataset description
 Before beginning with the EDA, the data required significant preparation to ensure accuracy and interpretability:
 
  **Data Type Standardization**   
@@ -68,7 +68,9 @@ We checked for two types of duplication: Full-row duplicates (identical rows) an
 **Final Outcome**
 All boolean values are properly formatted, irrelevant or redundant columns are removed, high-risk table fully aligned with the main dataset, risk labels integrated into the main table, duplicate rows resolved with priority rules, the dataset is now clean, consistent, and ready for reliable EDA and modeling.
 
-## 5. Exploratory Data Analysis (EDA)
+# **Methods**
+
+## Exploratory Data Analysis (EDA)
 
 Before performing modeling or statistical interpretation, we conducted an Exploratory Data Analysis (EDA) to better understand the structure, quality, and behavior of the dataset. EDA helps us to detect data quality issues, as well as identifying outliers and unusual patterns that may distort modeling, understand variable distributions and prepare the dataset for preprocessing and feature engineering, because ML models rely heavily on clean, correctly formatted data, EDA is a critical step before modeling.
 
@@ -129,8 +131,7 @@ We can drop the rows with missing division information AND even those present in
 Therefore, all values for these departments were imputed with values that MADE them risky -> they appear as risky by accident.
 Therefore, we should drop all departments with missing division.
 To make sure that data missingness is not correlated with risk, we check correlation between missing values and compliance or risk
-   
-***----heatmap here??***
+
 
 <img width="858" height="669" alt="image" src="https://github.com/user-attachments/assets/b336e98c-2a42-4815-9b00-6b3804c19c7e" />
 
@@ -169,9 +170,9 @@ flowchart TD
     F --> G[Clean Dataset]
 ```
 
-# **Methods**
+# **Experiments**
 
-**FIRST APPROACH**
+**FIRST EXPERIMENTAL APPROACH**
 ---
 **Predicting Non-Compliance and Building a Risk Framework**
 
@@ -277,14 +278,21 @@ We convert the three K-Means centroids into practical thresholds by taking the m
 
 
 
-**SECOND APPROACH**
+**SECOND EXPERIMENTAL APPROACH**
 
-**1. Introduction**
+---
+
 We created two new variables: 
 1. The Composite Risk Index (CRI) which measures how strongly a department resembles historically high-risk units based on operational, behavioral, and audit signals.
 2. The Composite Compliance Strength Factor (CCSF) captures the underlying strength of a department’s compliance practices.
  
- By looking at risk and compliance together—not as isolated numbers—we get a more accurate picture of how each department operates and where intervention or support is needed.
+By looking at risk and compliance together—not as isolated numbers — we get a more accurate picture of how each department operates and where intervention or support is needed.
+
+---
+
+**Creating the CRI: Composite Risk Indexr**
+
+---
 
 **1.1 What is the CRI?**
 The CRI (Composite Risk Index) is a single, data-driven score that summarizes how risky a department appears based on multiple opperational, behavioral, audit and performace signals, It combines several 'bad' risk factores and several 'good' protective factors into one standardized risk number, scaled 1-100.
@@ -305,7 +313,11 @@ The CRI is calculated by subtracting the Good_Score from the Bad_Score. A depart
 **1.5 Model Performance**
 The Random Forest model performed strongly, achieving 0.94 accuracy on the training set and 0.892 on the test set. The ROC AUC of 0.862 shows that the model is consistently able to distinguish high-risk from normal departments. These results confirm that the CRI is grounded in meaningful patterns and offers a reliable way to evaluate departmental risk.
 
+---
+
 **Creating the CCSF: Composite Compliance Strength Factor**
+
+---
 
 **2.1 Introduction**
 After building the CRI to measure risk, we introduce a second variable, which is the CCSF which looks at the factors that indicate strong or weak compliance performance. Together, CRI and CCSF give a balanced understanding of how each department behaves, allowing managers to evaluate risk and compliance with equal clarity.
@@ -319,6 +331,8 @@ To estimate how important each factor is, we trained a Random Forest classifier 
 The model’s Gini importances (tells us which variables are best at separating categories) were turned into weights, separately for good and bad factors, and each set was normalized so that the weights sum to one. These weights allow us to compute two components for every department: a weighted good score and a weighted bad score. **The CCSF_raw** score is simply the difference between these two components. Departments with strong audit performance, experienced managers, and consistent training tend to score higher, while departments showing structural weaknesses or operational risks tend to score lower.
 The raw CCSF is then scaled to a 1–100 range for easier interpretation. Across the full dataset, **CCSF scores range from 0 to 100**, with an average around 48. Using this distribution, the departments naturally fall into three groups: low, medium, and high compliance risk.
 
+<img width="960" height="617" alt="image" src="https://github.com/user-attachments/assets/6fb324dd-e7cf-43df-b699-1d74027a21e0" />
+
 **2.4 Why CCSF Matters**
 While CRI answers the question, “How risky does this department look?”, CCSF answers the equally important question, “How compliant is this department actually performing?” The CCSF helps managers understand why compliance may be weak—whether it is due to low training levels, poor audit scores, insufficient oversight, or operational challenges. Employees can also see how their actions directly improve compliance strength, since increases in training, experience, and process quality have visible effects on the CCSF.
 
@@ -327,7 +341,20 @@ Both indices are merged into a single departmental view to make comparison strai
 
 **A scatterplot of CRI and CCSF** shows a clear negative relationship: as risk increases, compliance decreases. A linear regression confirms this pattern, with a strong negative correlation of –0.81. This means the two indices move in opposite directions, which is exactly what we expect if both are capturing meaningful organizational behavior.
 
+<img width="943" height="545" alt="image" src="https://github.com/user-attachments/assets/6028283a-0245-42c4-b451-4b1aea9d202c" />
+
 **When CRI is high and CCSF is low, the message is clear: this department needs attention. Managers can use the two scores together to prioritize audits, target interventions, allocate resources, and plan improvement programs in a strategic way.**
+
+---
+**Why is this useful for managers and employees?**
+
+Instead of saying this department is risky, CRI gives a numerical early-warning indicator.
+
+CCSF tells the managers why compliance may be low, and it shows whether the compliance is linked to: lack of training, poor audit scores, operational risk, weak oversight, or other drivers. Because CCSF drops as CRI rises, managers say: "If we reduce the risk, compliance will improve." This makes it easier to allocate budget, train staff, plan audits, and design interventions. Employees can understand the impact of their actions, such as training hours, audit preparation, or operational discipline, which directly raise CCSF and reduce CRI.
+
+In conclusion: if we have high CRI and low CCSF for a department, this tells the staff that they should keep an eye on them and follow them more often.
+
+---
 
 ## 7. Ethical Considerations
 (*Bias, compliance, privacy*)
