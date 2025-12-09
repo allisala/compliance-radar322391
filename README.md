@@ -533,8 +533,8 @@ NONCOMPLIANT ((MEDIUM RISKS)
 By comparing generally risky departments with normal departments we find patterns that make departments generally risky. Then we create an index CRI which measures likeliness for a department to be generally risky. We assign each department with a status (high, medium, low) based on CRI. Next we match the concept of historical pattern (presence in high_risk departments) with CRI, providing suggestions for managers in each case. 
 
 COMPLIANT (MEDIUM RISKS)
-![compliant_medium_risk_with_ethical](images/compliant_medium_risk_with_ethical.png)
-![compliant_low_risk_final](images/compliant_low_risk_final.png)
+![compliant_low_risk_final1](images/compliant_low_risk_final1.png)
+![compliant_low_risk_final2](images/compliant_low_risk_final2.png)
 
 
 # Final Conclusion
