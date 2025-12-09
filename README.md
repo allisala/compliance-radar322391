@@ -1,5 +1,13 @@
 # Compliance Radar
+
 Machine Learning project
+
+---
+## Contributors
+- Lamina Alisa
+- Kopalina Maiia, 321891
+- Filippa Gronberg
+- Evelina Ristovska, 315951
 
 # **Introduction**
 This project focuses on understanding organizational compliance, specifically the factors that influence whether a department follows or deviates from company rules. Although the precise rules are not defined, the dataset provides a rich set of operational, structural, managerial, and behavioral indicators that reflect how departments function and how vulnerable they may be to compliance failures.
@@ -361,12 +369,6 @@ In conclusion: if we have high CRI and low CCSF for a department, this tells the
 
 ## 8. Project Structure
 (*How the files are organized*)
-
-## 9. Contributors
-- Lamina Alisa
-- Kopalina Maiia, 321891
-- Filippa Gronberg
-- Evelina Ristovska, 315951
 
 
 | Link | Description |
